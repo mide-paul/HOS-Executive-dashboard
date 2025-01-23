@@ -1,0 +1,62 @@
+'use client';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import sort from './../public/icons/sort.png';
+import logo from './../public/images/logo.png';
+import { Logout } from './logout';
+
+const Sidebar = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const pathname = usePathname();
+
+  const tabs = [
+    { name: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
+    { name: 'Sales Pipeline', href: '/sales-pipeline', icon: 'person' },
+    { name: 'Financial Compensation', href: '/financial-compensation', icon: 'payments' },
+    { name: 'Compliance Metrics', href: '/compliance-metrics', icon: 'rule' },
+    { name: 'Client Engagement Metrics', href: '/client-engagement-metrics', icon: 'group' },
+    { name: 'Operational Metrics', href: '/operational-metrics', icon: 'analytics' },
+    { name: 'Reports & Analytics', href: '/reports-analytics', icon: 'bar_chart' },
+  ];
+
+  return (
+    <>
+      <button
+        className="p-3 text-white fixed top-4 left-80 pl-6 z-30 md:hidden"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        <Image src={sort} alt="hamburger" className="w-6 h-6 object-cover" />
+      </button>
+      <div
+        className={`h-full w-64 bg-white text-black flex flex-col fixed left-0 top-0 border border-black transform z-20 ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-64'
+        } transition-transform duration-200 md:translate-x-0`}
+      >
+        <div className="flex ml-4 items-center justify-left h-16 lg:ml-4 lg:mt-1">
+          <Image src={logo} alt="Profile Picture" className="w-36 h-24" />
+        </div>
+        <nav className="flex-1 p-4">
+          {tabs.map((tab) => (
+            <Link key={tab.name} href={tab.href} legacyBehavior>
+              <a
+                className={`block py-2 px-4 rounded-lg mb-2 text-xs font-normal hover:bg-gray-200 transition-colors duration-200 ${
+                  pathname === tab.href ? 'bg-gray-200' : ''
+                }`}
+              >
+                <div className="flex items-center">
+                  <span className="material-icons mr-3">{tab.icon}</span>
+                  {tab.name}
+                </div>
+              </a>
+            </Link>
+          ))}
+        </nav>
+        <Logout />
+      </div>
+    </>
+  );
+};
+
+export default Sidebar;
