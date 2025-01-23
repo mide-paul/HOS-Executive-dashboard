@@ -207,7 +207,7 @@ const CompanyLogin = () => {
                           Remember me
                         </p>
                       </div>
-                      <p className="text-blue-950 -mt-4 max-w-19 ml-32 text-xs lg:text-sm text-left z-10 cursor-pointer">
+                      <p className="text-blue-950 -mt-4 lg:-mt-5 max-w-19 ml-32 lg:ml-72 text-xs lg:text-sm text-left z-10 cursor-pointer">
                         Forgot Password?
                       </p>
                     </div>
