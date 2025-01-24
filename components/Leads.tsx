@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import linkedin from './../public/icons/linkedin.svg';
 import avatar from './../public/images/avatar.svg';
+import action from './../public/icons/action.svg';
 
 interface Lead {
     id: number;
@@ -40,7 +41,7 @@ const LeadsTable: React.FC = () => {
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
     const leadsPerPage = 10; // Show 10 leads per page
-    const totalLeads = leads.length;
+    // const totalLeads = leads.length;
 
     // Filtered leads based on selected filters
     const filteredLeads = leads.filter((lead) => {
@@ -115,7 +116,7 @@ const LeadsTable: React.FC = () => {
                 <tbody>
                     {paginatedLeads.map((lead) => (
                         <tr key={lead.id} className="border-b hover:bg-gray-50">
-                            <td className="p-2 border flex gap-3 items-center text-sm">
+                            <td className="p-4 border flex gap-3 items-center text-sm">
                                 <Image
                                     src={avatar}
                                     alt={"source logo"}
@@ -124,7 +125,7 @@ const LeadsTable: React.FC = () => {
                                 {lead.name}
                             </td>
                             <td className="p-2 border text-sm">{lead.company}</td>
-                            <td className="p-2 border flex gap-3 text-sm">
+                            <td className="p-4 border flex gap-3 text-sm">
                                 <span>
                                     <Image
                                         src={linkedin}
@@ -149,7 +150,11 @@ const LeadsTable: React.FC = () => {
                                     }}
                                     className="text-blue-500 hover:underline text-sm"
                                 >
-                                    Actions
+                                    <Image
+                                        src={action}
+                                        alt={""}
+                                        className="w-6 h-6 ml-6"
+                                    />
                                 </button>
                             </td>
                         </tr>
@@ -162,9 +167,9 @@ const LeadsTable: React.FC = () => {
                 <button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
-                    className={`px-4 py-2 rounded-md ${currentPage === 1
+                    className={`px-4 py-1 rounded-md text-xs border border-blue-950 ${currentPage === 1
                         ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-blue-600 text-white hover:bg-blue-700"
+                        : "bg-white text-blue-950 hover:bg-blue-700"
                         }`}
                 >
                     Previous
@@ -175,9 +180,9 @@ const LeadsTable: React.FC = () => {
                 <button
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
-                    className={`px-4 py-2 rounded-md ${currentPage === totalPages
+                    className={`px-4 py-1 rounded-md text-xs border border-blue-950 ${currentPage === totalPages
                         ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-blue-600 text-white hover:bg-blue-700"
+                        : "bg-white text-blue-950 hover:bg-blue-700"
                         }`}
                 >
                     Next
@@ -186,26 +191,26 @@ const LeadsTable: React.FC = () => {
 
             {/* Add New Lead Modal */}
             {showAddModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                <div className="fixed inset-0 mt-4 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
-                        <h2 className="text-xl font-semibold mb-4">Add New Lead</h2>
-                        <form className="space-y-4">
+                        <h2 className="text-sm font-semibold mb-4">Add New Lead</h2>
+                        <form className="space-y-3">
                             <input
                                 type="text"
                                 placeholder="Lead Name"
-                                className="w-full border rounded-md p-2"
+                                className="w-full border rounded-md p-2 text-xs"
                             />
                             <input
                                 type="text"
                                 placeholder="Company Name"
-                                className="w-full border rounded-md p-2"
+                                className="w-full border rounded-md p-2 text-xs"
                             />
                             <input
                                 type="number"
                                 placeholder="Company Size"
-                                className="w-full border rounded-md p-2"
+                                className="w-full border rounded-md p-2 text-xs"
                             />
-                            <select className="w-full border rounded-md p-2">
+                            <select className="w-full border rounded-md p-2 text-xs">
                                 <option value="">Lead Type</option>
                                 <option value="Hot">Hot</option>
                                 <option value="Cold">Cold</option>
@@ -213,38 +218,38 @@ const LeadsTable: React.FC = () => {
                             <input
                                 type="email"
                                 placeholder="Email"
-                                className="w-full border rounded-md p-2"
+                                className="w-full border rounded-md p-2 text-xs"
                             />
                             <input
                                 type="text"
                                 placeholder="Phone Number"
-                                className="w-full border rounded-md p-2"
+                                className="w-full border rounded-md p-2 text-xs"
                             />
-                            <select className="w-full border rounded-md p-2">
+                            <select className="w-full border rounded-md p-2 text-xs">
                                 <option value="">Lead Source</option>
                                 <option value="Referral">Referral</option>
                                 <option value="Ads">Ads</option>
                             </select>
-                            <select className="w-full border rounded-md p-2">
+                            <select className="w-full border rounded-md p-2 text-xs">
                                 <option value="">Lead Status</option>
                                 <option value="Open">Open</option>
                                 <option value="Closed">Closed</option>
                             </select>
                             <textarea
                                 placeholder="Notes"
-                                className="w-full border rounded-md p-2"
+                                className="w-full border rounded-md p-2 text-xs"
                             ></textarea>
                             <div className="flex justify-end gap-4">
                                 <button
                                     type="button"
                                     onClick={() => setShowAddModal(false)}
-                                    className="px-4 py-2 bg-gray-300 rounded-md"
+                                    className="px-4 py-2 bg-gray-300 rounded-md text-xs"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                                    className="px-4 py-2 bg-blue-950 text-white rounded-md text-xs"
                                 >
                                     Save
                                 </button>

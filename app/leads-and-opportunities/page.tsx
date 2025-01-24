@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Sidebar from '@/components/Sidebar';
 import { Header } from '@/components/header';
 import LeadsTable from '@/components/Leads';
