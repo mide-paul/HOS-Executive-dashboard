@@ -19,7 +19,7 @@ const dashboard = () => {
             <div className='pb-10'>
                 <Header />
             </div>
-            <div className='max-w-6xl min-h-[880px] bg-white lg:mt-14 lg:ml-64 2xl:w-max-w-7xl rounded'>
+            <div className='max-w-6xl min-h-[880px] bg-white lg:mt-14 md:ml-64 lg:ml-64 2xl:w-max-w-7xl rounded'>
                 <div>
                     <h3 className='font-normal text-blue-950 text-sm pt-16 ml-8 lg:pt-8 lg:ml-7'>Bonus and Commission Progress</h3>
                     <div className='flex flex-col lg:flex-row gap-4'>
@@ -46,7 +46,7 @@ const dashboard = () => {
                                     alt=""
                                     className="w-4 h-4 ml-3 object-cover"
                                 />
-                                <h3 className='font-normal text-black text-sm'>Total earned</h3>
+                                <h3 className='font-normal text-black text-sm'>Total Pending Payments</h3>
                             </div>
                             <Image
                                 src={line_dark}
@@ -62,7 +62,7 @@ const dashboard = () => {
                                     alt=""
                                     className="w-4 h-4 ml-3 object-cover"
                                 />
-                                <h3 className='font-normal text-black text-sm'>Total earned</h3>
+                                <h3 className='font-normal text-black text-sm'>Total Upcoming Payouts</h3>
                             </div>
                             <Image
                                 src={line_dark}

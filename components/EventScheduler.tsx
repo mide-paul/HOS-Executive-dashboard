@@ -10,6 +10,7 @@ import {
   isSameDay,
   isSameMonth,
   parseISO,
+  startOfDay,
 } from "date-fns";
 
 interface Event {
@@ -44,15 +45,22 @@ const Calendar: React.FC = () => {
     recurrence: "",
   });
 
-  const handlePrevMonth = () => setCurrentMonth((prev) => sub(prev, { months: 1 }));
-  const handleNextMonth = () => setCurrentMonth((prev) => add(prev, { months: 1 }));
+  const handlePrevMonth = () =>
+    setCurrentMonth((prev) => sub(prev, { months: 1 }));
+  const handleNextMonth = () =>
+    setCurrentMonth((prev) => add(prev, { months: 1 }));
 
   const handleOpenModal = (date: Date | null, event: Event | null = null) => {
+    if (date) {
+      date = startOfDay(date); // Normalize the date to the start of the day
+    }
+
     setFormData({
       title: event?.title || "",
       duration: event?.duration || "",
       recurrence: event?.recurrence || "",
     });
+
     setModal({ isOpen: true, event, date });
   };
 
@@ -63,6 +71,7 @@ const Calendar: React.FC = () => {
 
   const handleSaveEvent = () => {
     const { title, duration, recurrence } = formData;
+
     if (!title || !duration) {
       alert("Please fill in all required fields.");
       return;
@@ -73,7 +82,13 @@ const Calendar: React.FC = () => {
       setEvents((prev) =>
         prev.map((e) =>
           e.id === modal.event!.id
-            ? { ...e, title, duration, recurrence }
+            ? {
+                ...e,
+                title,
+                duration,
+                recurrence,
+                date: modal.date!.toISOString(),
+              }
             : e
         )
       );
@@ -127,7 +142,7 @@ const Calendar: React.FC = () => {
     let day = startDate;
 
     while (day <= endDate) {
-      const dayEvents = events.filter((event) =>
+      const hasEvent = events.some((event) =>
         isSameDay(parseISO(event.date), day)
       );
 
@@ -137,21 +152,9 @@ const Calendar: React.FC = () => {
           onClick={() => handleOpenModal(day)}
           className={`p-4 border ${
             isSameMonth(day, currentMonth) ? "" : "bg-gray-100 text-gray-400"
-          }`}
+          } ${hasEvent ? "bg-blue-100 border-blue-500" : ""}`}
         >
           <div>{format(day, "d")}</div>
-          {dayEvents.map((event) => (
-            <div
-              key={event.id}
-              className="text-sm text-blue-500 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleOpenModal(null, event);
-              }}
-            >
-              {event.title}
-            </div>
-          ))}
         </div>
       );
 
@@ -183,11 +186,13 @@ const Calendar: React.FC = () => {
         ) : (
           <ul>
             {events.map((event) => (
-              <li key={event.id} className="flex justify-between items-center mb-2 text-sm border p-2 rounded">
+              <li
+                key={event.id}
+                className="flex justify-between items-center mb-2 text-sm border p-2 rounded"
+              >
                 <span>
-                  {format(parseISO(event.date), "MMMM d, yyyy")}: {event.title} -{" "}
-                  {event.duration}{" "}
-                  {event.recurrence ? `(Repeats: ${event.recurrence})` : ""}
+                  {event.title} - {event.duration}
+                  {event.recurrence ? ` (Repeats: ${event.recurrence})` : ""}
                 </span>
                 <div className="space-x-2">
                   <button
@@ -226,7 +231,7 @@ const Calendar: React.FC = () => {
             />
             <input
               type="text"
-              placeholder="Duration (e.g., 1 hour)"
+              placeholder="Duration (e.g., 7:00 - 8:00am)"
               value={formData.duration}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, duration: e.target.value }))
@@ -236,7 +241,10 @@ const Calendar: React.FC = () => {
             <select
               value={formData.recurrence}
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, recurrence: e.target.value as "weekly" | "monthly" | "" }))
+                setFormData((prev) => ({
+                  ...prev,
+                  recurrence: e.target.value as "weekly" | "monthly" | "",
+                }))
               }
               className="border p-2 w-full mb-4 text-sm"
             >

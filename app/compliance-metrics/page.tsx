@@ -33,7 +33,7 @@ const compliance = () => {
                     <div>
                         <h3 className='font-normal text-blue-950 text-sm pt-6 ml-8 lg:pt-8 lg:ml-7'>HOS violation reduction</h3>
                     </div>
-                    <div className='w-80 lg:max-w-5xl h-full ml-7 mt-6 bg-white rounded-md shadow'>
+                    <div className='w-80 lg:min-w-[1010px] h-full ml-7 mt-6 bg-white rounded-md shadow'>
                         <Violation />
                     </div>
                 </div>

@@ -21,7 +21,7 @@ export const Logout = () => {
 
     return (
         <div
-            className="absolute flex ml-8 lg:flex-row lg:ml-9 mt-96 pt-11 w-20 h-6.5 items-center gap-0 cursor-pointer"
+            className="absolute flex ml-8 lg:flex-row lg:ml-9 mt-96 pt-36 w-20 h-6.5 items-center gap-0 cursor-pointer"
             onClick={handleLogout}
         >
             <span className="material-icons mr-3">logout</span>

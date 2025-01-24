@@ -4,6 +4,8 @@ import axios, { AxiosError } from "axios";
 
 const API_URL = "https://api.hosoptima.com";
 
+// axios.defaults.withCredentials = true;
+
 // Utility function to save user to localStorage
 const saveUserToLocalStorage = (user: User | null) => {
   if (user) {

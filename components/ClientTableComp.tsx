@@ -8,7 +8,6 @@ import arrow_right from './../public/icons/arrow_right.svg';
 import doe from './../public/images/doe.png';
 // import axios from "axios";
 
-
 // Define types
 type Client = {
     // imageUrl: string | undefined;
@@ -295,9 +294,8 @@ export default function ClientTable() {
                                     })
                                 }
                             >
-                                <option value="Small">Small</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Large">Large</option>
+                                <option value="Small">Single Driver</option>
+                                <option value="Medium">Enterprise</option>
                             </select>
                         </div>
                         <div className="mt-4 flex justify-end space-x-2">

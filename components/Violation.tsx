@@ -117,7 +117,7 @@ const Violation: React.FC = () => {
             </div>
 
             {/* Line Chart */}
-            <ResponsiveContainer className="w-80 lg:w-96" height={240}>
+            <ResponsiveContainer className="w-80 lg:min-w-[1010px]" height={240}>
                 <LineChart data={chartData[selectedYear]}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" tick={{ style: customTickStyle }}>

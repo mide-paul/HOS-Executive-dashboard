@@ -13,6 +13,8 @@ const Sidebar = () => {
 
   const tabs = [
     { name: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
+    { name: 'Leads & Opportunities', href: '/leads-and-opportunities', icon: 'person' },
+    { name: 'Clients & Accounts', href: '/clients-and-accounts', icon: 'person' },
     { name: 'Sales Pipeline', href: '/sales-pipeline', icon: 'person' },
     { name: 'Financial Compensation', href: '/financial-compensation', icon: 'payments' },
     { name: 'Compliance Metrics', href: '/compliance-metrics', icon: 'rule' },
