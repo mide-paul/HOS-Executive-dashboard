@@ -43,6 +43,17 @@ const LeadsTable: React.FC = () => {
     const leadsPerPage = 10; // Show 10 leads per page
     // const totalLeads = leads.length;
 
+    const getStatusBgColor = (dealStage: Lead["status"]) => {
+        switch (dealStage) {
+            case "Open":
+                return "bg-green-100 text-green-700";
+            case "Closed":
+                return "bg-red-100 text-red-700";
+            default:
+                return "bg-gray-100 text-gray-700";
+        }
+    };
+
     // Filtered leads based on selected filters
     const filteredLeads = leads.filter((lead) => {
         return (
@@ -88,13 +99,13 @@ const LeadsTable: React.FC = () => {
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => setShowAddModal(true)}
-                        className="px-2 py-1 text-sm bg-white text-blue-950 border border-blue-950 rounded-md"
+                        className="px-2 py-1 text-xs bg-white text-blue-950 border border-blue-950 rounded-md"
                     >
                         + Add New Lead
                     </button>
                     <button
                         onClick={() => setShowFilterModal(true)}
-                        className="px-2 py-1 text-sm bg-gray-100 text-gray-700 border border-gray-300 rounded-md"
+                        className="px-2 py-1 text-xs bg-gray-100 text-gray-700 border border-gray-300 rounded-md"
                     >
                         Filters
                     </button>
@@ -104,7 +115,7 @@ const LeadsTable: React.FC = () => {
             {/* Lead Table */}
             <table className="min-w-full bg-white border">
                 <thead>
-                    <tr className="bg-gray-100 text-left text-sm">
+                    <tr className="bg-gray-100 text-left text-xs">
                         <th className="p-2 border">Lead Name</th>
                         <th className="p-2 border">Company</th>
                         <th className="p-2 border">Lead Source</th>
@@ -116,7 +127,7 @@ const LeadsTable: React.FC = () => {
                 <tbody>
                     {paginatedLeads.map((lead) => (
                         <tr key={lead.id} className="border-b hover:bg-gray-50">
-                            <td className="p-4 border flex gap-3 items-center text-sm">
+                            <td className="p-4 border flex gap-3 items-center text-xs">
                                 <Image
                                     src={avatar}
                                     alt={"source logo"}
@@ -124,8 +135,8 @@ const LeadsTable: React.FC = () => {
                                 />
                                 {lead.name}
                             </td>
-                            <td className="p-2 border text-sm">{lead.company}</td>
-                            <td className="p-4 border flex gap-3 text-sm">
+                            <td className="p-2 border text-xs">{lead.company}</td>
+                            <td className="p-4 border flex gap-3 text-xs">
                                 <span>
                                     <Image
                                         src={linkedin}
@@ -135,12 +146,16 @@ const LeadsTable: React.FC = () => {
                                 </span>
                                 {lead.source}
                             </td>
-                            <td className="p-2 border text-sm">{lead.stage}</td>
+                            <td className="p-2 border text-xs">{lead.stage}</td>
                             <td
-                                className={`p-2 border font-medium text-sm ${lead.status === "Open" ? "text-green-600" : "text-red-600"
+                                className={`p-2 border font-medium text-xs ${lead.status === "Open" ? "text-green-600" : "text-red-600"
                                     }`}
                             >
+                                <span className={`border px-2 py-0.5 rounded-2xl text-xs ${getStatusBgColor(
+                                    lead.status
+                                )}`}>
                                 {lead.status}
+                                </span>
                             </td>
                             <td className="p-2 border text-sm">
                                 <button
@@ -168,13 +183,13 @@ const LeadsTable: React.FC = () => {
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
                     className={`px-4 py-1 rounded-md text-xs border border-blue-950 ${currentPage === 1
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        ? "bg-white text-gray-500 cursor-not-allowed"
                         : "bg-white text-blue-950 hover:bg-blue-700"
                         }`}
                 >
                     Previous
                 </button>
-                <span className="text-gray-700">
+                <span className="text-gray-700 text-xs">
                     Page {currentPage} of {totalPages}
                 </span>
                 <button
@@ -191,7 +206,7 @@ const LeadsTable: React.FC = () => {
 
             {/* Add New Lead Modal */}
             {showAddModal && (
-                <div className="fixed inset-0 mt-4 bg-black bg-opacity-50 flex justify-center items-center">
+                <div className="fixed inset-0 lg:mt-14 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
                         <h2 className="text-sm font-semibold mb-4">Add New Lead</h2>
                         <form className="space-y-3">
@@ -263,17 +278,17 @@ const LeadsTable: React.FC = () => {
             {showFilterModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                        <h2 className="text-xl font-semibold mb-4">Filter Leads</h2>
+                        <h2 className="text-xs font-semibold mb-4">Filter Leads</h2>
                         <form className="space-y-4">
                             <div>
-                                <label htmlFor="type" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="type" className="block text-xs font-medium text-gray-700">
                                     Lead Type
                                 </label>
                                 <select
                                     id="type"
                                     value={filter.type}
                                     onChange={(e) => handleFilterChange(e, "type")}
-                                    className="w-full border rounded-md p-2"
+                                    className="w-full border rounded-md p-2 text-xs"
                                 >
                                     <option value="">All</option>
                                     <option value="Hot">Hot</option>
@@ -281,29 +296,29 @@ const LeadsTable: React.FC = () => {
                                 </select>
                             </div>
                             <div>
-                                <label htmlFor="source" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="source" className="block text-xs font-medium text-gray-700">
                                     Lead Source
                                 </label>
                                 <select
                                     id="source"
                                     value={filter.source}
                                     onChange={(e) => handleFilterChange(e, "source")}
-                                    className="w-full border rounded-md p-2"
+                                    className="w-full border rounded-md p-2 text-xs"
                                 >
                                     <option value="">All</option>
-                                    <option value="Referral">Linkedin</option>
-                                    <option value="Ads">Gmail</option>
+                                    <option value="Linkedin">Linkedin</option>
+                                    <option value="Gmail">Gmail</option>
                                 </select>
                             </div>
                             <div>
-                                <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="status" className="block text-xs font-medium text-gray-700">
                                     Lead Status
                                 </label>
                                 <select
                                     id="status"
                                     value={filter.status}
                                     onChange={(e) => handleFilterChange(e, "status")}
-                                    className="w-full border rounded-md p-2"
+                                    className="w-full border rounded-md p-2 text-xs"
                                 >
                                     <option value="">All</option>
                                     <option value="Open">Open</option>
@@ -314,7 +329,7 @@ const LeadsTable: React.FC = () => {
                                 <button
                                     type="button"
                                     onClick={() => setShowFilterModal(false)}
-                                    className="px-4 py-2 bg-gray-300 rounded-md"
+                                    className="px-4 py-2 bg-gray-300 rounded-md text-xs"
                                 >
                                     Close
                                 </button>
@@ -328,23 +343,23 @@ const LeadsTable: React.FC = () => {
             {showActionModal && selectedLead && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                        <h2 className="text-xl font-semibold mb-4">Lead Actions</h2>
-                        <p className="mb-4">What would you like to do with {selectedLead.name}?</p>
+                        <h2 className="text-xs font-semibold mb-4">Lead Actions</h2>
+                        <p className="mb-4 text-xs">What would you like to do with {selectedLead.name}?</p>
                         <ul className="space-y-4">
                             <li>
-                                <button className="text-blue-500 hover:underline">View Lead Details</button>
+                                <button className="text-blue-500 hover:underline text-xs">View Lead Details</button>
                             </li>
                             <li>
-                                <button className="text-blue-500 hover:underline">Send Email</button>
+                                <button className="text-blue-500 hover:underline text-xs">Send Email</button>
                             </li>
                             <li>
-                                <button className="text-blue-500 hover:underline">Schedule Meeting</button>
+                                <button className="text-blue-500 hover:underline text-xs">Schedule Meeting</button>
                             </li>
                         </ul>
                         <div className="mt-4 flex justify-end">
                             <button
                                 onClick={handleActionModalClose}
-                                className="px-4 py-2 bg-gray-300 rounded-md"
+                                className="px-4 py-2 bg-gray-300 rounded-md text-xs"
                             >
                                 Close
                             </button>
