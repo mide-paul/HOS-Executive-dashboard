@@ -85,6 +85,11 @@ const CompanyLogin = () => {
       const response = await login(email, password); // Assuming this returns a token or user data
       const { token } = response; // Extract token from response
 
+      if (!token) {
+        console.error("❌ Token not found in response.");
+        return;
+      }
+
       // Set authentication cookie
       setCookie("authToken", token, {
         maxAge: rememberMe ? 60 * 60 * 24 * 7 : 0, // 7 days if "Remember Me" is checked, session cookie otherwise
@@ -93,13 +98,18 @@ const CompanyLogin = () => {
         sameSite: "strict", // Prevent CSRF
       });
 
+      // Store token in localStorage for easy access in frontend
+      localStorage.setItem("token", token);
+
+      // Store user credentials in localStorage if "Remember Me" is checked
       if (rememberMe) {
         localStorage.setItem("user", JSON.stringify({ email, password }));
       }
 
+      // Redirect to the dashboard
       router.push("/dashboard");
     } catch (err) {
-      console.error(err);
+      console.error("❌ Login failed:", err);
     } finally {
       setLoading(false);
     }
@@ -194,7 +204,7 @@ const CompanyLogin = () => {
                                     Must include at least two uppercase letters, at least three lowercase letters, at least two digits and a special character.<br />
                                 </p> */}
                     </div>
-                    {error && <p className="text-red-600 text-center font-semibold mt-2">{error}</p>}
+                    {error && <p className="text-red-600 text-center text-sm font-semibold mt-2">{error}</p>}
 
                     <div>
                       <div className="flex items-center">
@@ -246,7 +256,7 @@ const CompanyLogin = () => {
                 </span> */}
 
         <div>
-          <h3 className="-mt-1 lg:-mt-14 ml-3.5 md:ml-48 lg:ml-16 text-nowrap text-left text-sm text-white">© 2025 Rights are Reserved by HOSOptima.com</h3>
+          <h3 className="-mt-1 lg:-mt-14 ml-3.5 md:ml-48 lg:ml-16 text-nowrap text-left text-sm text-white">© 2025 Rights are Reserved by hosoptima.com</h3>
         </div>
       </div>
     </div>

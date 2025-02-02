@@ -89,16 +89,16 @@ export default function FinancialReports() {
             <table className="w-full border-collapse border border-gray-200">
                 <thead className="bg-gray-100 text-xs text-left">
                     <tr>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Client Name</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Revenue</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Expenses</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Client Acquisition Cost</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Client Name</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Revenue</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Expenses</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Client Acquisition Cost</th>
                     </tr>
                 </thead>
                 <tbody>
                     {paginatedClients.map((client) => (
                         <tr key={client.id}>
-                            <td className="border px-1 lg:px-4 py-2 flex items-center space-x-3">
+                            <td className="border-b px-1 lg:px-4 py-2 flex items-center space-x-3">
                                 <Image
                                     src={avatar}
                                     alt={`${client.name} Logo`}
@@ -106,13 +106,13 @@ export default function FinancialReports() {
                                 />
                                 <span className="text-xs items-center">{client.name}</span>
                             </td>
-                            <td className="border px-1 lg:px-4 py-2 text-xs text-left">
+                            <td className="border-y px-1 lg:px-4 py-2 text-xs text-left">
                                 ${client.monthlyData[selectedMonth].revenue.toFixed(2)}
                             </td>
-                            <td className="border px-1 lg:px-4 py-2 text-xs text-left">
+                            <td className="border-y px-1 lg:px-4 py-2 text-xs text-left">
                                 ${client.monthlyData[selectedMonth].expenses.toFixed(2)}
                             </td>
-                            <td className="border px-1 lg:px-4 py-2 text-xs text-left">
+                            <td className="border-y px-1 lg:px-4 py-2 text-xs text-left">
                                 ${client.monthlyData[selectedMonth].clientAcquisitionCost.toFixed(2)}
                             </td>
                         </tr>

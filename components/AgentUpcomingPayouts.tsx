@@ -12,7 +12,7 @@ type RowData = {
     status: "Paid" | "Pending";
 };
 
-export default function Table() {
+export default function AgentUpcomingPayouts() {
     // Constants
     const rowsPerPage = 10; // Number of rows per page
     const totalPages = 10; // Total number of pages

@@ -92,25 +92,25 @@ export default function RegulatoryReports() {
             <table className="w-full border-collapse border border-gray-200">
                 <thead className="bg-gray-100 text-xs text-left">
                     <tr>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">% of drivers failing HOS assessment</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">HOS Knowledge Deficits</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Post training metrics</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">CSA Scores</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">% of drivers failing HOS assessment</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">HOS Knowledge Deficits</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Post training metrics</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">CSA Scores</th>
                     </tr>
                 </thead>
                 <tbody>
                     {paginatedClients.map((client) => (
                         <tr key={client.id}>
-                            <td className="border px-4 py-2 text-xs text-left">
+                            <td className="border-y px-4 py-2 text-xs text-left">
                                 {formatPercentage(client.monthlyData[selectedMonth].driversFailingHOS)}
                             </td>
-                            <td className="border px-4 py-2 text-xs text-left">
+                            <td className="border-b px-4 py-2 text-xs text-left">
                                 {client.monthlyData[selectedMonth].hosKnowledgeDeficits}
                             </td>
-                            <td className="border px-4 py-2 text-xs text-left">
+                            <td className="border-b px-4 py-2 text-xs text-left">
                                 ${client.monthlyData[selectedMonth].postTrainingMetrics.toLocaleString()}
                             </td>
-                            <td className="border px-4 py-2 text-xs text-left">
+                            <td className="border-b px-4 py-2 text-xs text-left">
                                 {client.monthlyData[selectedMonth].csaScore}
                             </td>
                         </tr>

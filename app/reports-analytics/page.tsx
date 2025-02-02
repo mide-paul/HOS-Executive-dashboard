@@ -23,7 +23,7 @@ const Reports = () => {
                         <div className="flex gap-8 mt-4 ml-4">
                             {/* Revenue and Upcoming Payouts links */}
                             <h3
-                                className={`font-medium text-xs ${currentView === 'RevenueYearly' ? 'text-blue-950' : 'text-gray-500'
+                                className={`font-normal text-xs ${currentView === 'CustomReport' ? 'text-blue-950 font-semibold' : 'text-gray-500'
                                     }`}
                                 onClick={() => setCurrentView('CustomReport')}
                                 style={{ cursor: 'pointer' }}
@@ -31,7 +31,7 @@ const Reports = () => {
                                 Custom Report Generation
                             </h3>
                             <h3
-                                className={`font-normal text-xs ${currentView === 'UpcomingPayouts' ? 'text-blue-950' : 'text-gray-500'
+                                className={`font-normal text-xs ${currentView === 'FinancialReports' ? 'text-blue-950 font-semibold' : 'text-gray-500'
                                     }`}
                                 onClick={() => setCurrentView('FinancialReports')}
                                 style={{ cursor: 'pointer' }}
@@ -39,7 +39,7 @@ const Reports = () => {
                                 Financial Reports
                             </h3>
                             <h3
-                                className={`font-normal text-xs ${currentView === 'UpcomingPayouts' ? 'text-blue-950' : 'text-gray-500'
+                                className={`font-normal text-xs ${currentView === 'RegulatoryReports' ? 'text-blue-950 font-semibold' : 'text-gray-500'
                                     }`}
                                 onClick={() => setCurrentView('RegulatoryReports')}
                                 style={{ cursor: 'pointer' }}

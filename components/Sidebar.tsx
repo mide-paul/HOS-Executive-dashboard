@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import sort from './../public/icons/sort.png';
 import logo from './../public/images/logo.png';
-import { Logout } from './logout';
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -16,11 +15,14 @@ const Sidebar = () => {
     { name: 'Leads & Opportunities', href: '/leads-and-opportunities', icon: 'person' },
     { name: 'Clients & Accounts', href: '/clients-and-accounts', icon: 'person' },
     { name: 'Sales Pipeline', href: '/sales-pipeline', icon: 'person' },
+    { name: 'Sales Agents', href: '/sales-agents', icon: 'person' },
+    { name: 'Pipelines & Campaign Management', href: '/pipelines-campaign', icon: 'campaign' },
     { name: 'Financial Compensation', href: '/financial-compensation', icon: 'payments' },
     { name: 'Compliance Metrics', href: '/compliance-metrics', icon: 'rule' },
     { name: 'Client Engagement Metrics', href: '/client-engagement-metrics', icon: 'group' },
     { name: 'Operational Metrics', href: '/operational-metrics', icon: 'analytics' },
     { name: 'Reports & Analytics', href: '/reports-analytics', icon: 'bar_chart' },
+    { name: 'Settings', href: '/settings', icon: 'settings' },
   ];
 
   return (
@@ -32,19 +34,19 @@ const Sidebar = () => {
         <Image src={sort} alt="hamburger" className="w-6 h-6 object-cover" />
       </button>
       <div
-        className={`h-full w-64 bg-white text-black flex flex-col fixed left-0 top-0 border border-black transform z-20 ${
+        className={`h-full w-64 bg-white text-black flex flex-col fixed left-0 top-0 border border-black transform z-30 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-64'
         } transition-transform duration-200 md:translate-x-0`}
       >
         <div className="flex ml-4 items-center justify-left h-16 lg:ml-4 lg:mt-1">
           <Image src={logo} alt="Profile Picture" className="w-36 h-24" />
         </div>
-        <nav className="flex-1 p-4">
+        <nav className="flex-1 p-4 -mt-3">
           {tabs.map((tab) => (
             <Link key={tab.name} href={tab.href} legacyBehavior>
               <a
-                className={`block py-2 px-4 rounded-lg mb-2 text-xs font-normal hover:bg-gray-200 transition-colors duration-200 ${
-                  pathname === tab.href ? 'bg-gray-200' : ''
+                className={`block py-1.5 px-4 rounded-lg mb-2 text-xs font-normal hover:bg-gray-200 transition-colors duration-200 ${
+                  pathname === tab.href ? 'bg-gray-200 text-blue-950 font-semibold' : ''
                 }`}
               >
                 <div className="flex items-center">
@@ -55,7 +57,6 @@ const Sidebar = () => {
             </Link>
           ))}
         </nav>
-        <Logout />
       </div>
     </>
   );

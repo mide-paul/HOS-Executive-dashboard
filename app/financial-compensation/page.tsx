@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Sidebar from '@/components/Sidebar';
 import { Header } from '@/components/header';
-import money_bag from '../../public/icons/money_bag.svg'
-import line_dark from '../../public/icons/line_dark.png'
+import money_bag from '../../public/icons/money_bag.svg';
+import line_dark from '../../public/icons/line_dark.png';
 import RevenueYearly from '@/components/RevenueYearly';
 import UpcomingPayouts from '@/components/UpcomingPayouts';
 
@@ -117,7 +117,7 @@ const Financial = () => {
                                         alt=""
                                         className="w-4 h-4 ml-7 object-cover"
                                     />
-                                    <h3 className='font-normal text-black text-xs max-w-44'>Total commission earned from training sales</h3>
+                                    <h3 className='font-normal text-black text-xs max-w-44'>Total commission earned from ad sales</h3>
                                 </div>
                                 <Image
                                     src={line_dark}
@@ -135,8 +135,8 @@ const Financial = () => {
                         <div className="flex mt-4 ml-4">
                             {/* Revenue and Upcoming Payouts links */}
                             <h3
-                                className={`font-medium text-xs mt-5 ml-6 lg:ml-7 ${
-                                    currentView === 'RevenueYearly' ? 'text-blue-950' : 'text-gray-500'
+                                className={`font-normal text-xs mt-5 ml-6 lg:ml-7 ${
+                                    currentView === 'RevenueYearly' ? 'text-blue-950 font-semibold' : 'text-gray-500'
                                 }`}
                                 onClick={() => setCurrentView('RevenueYearly')}
                                 style={{ cursor: 'pointer' }}
@@ -145,7 +145,7 @@ const Financial = () => {
                             </h3>
                             <h3
                                 className={`font-normal text-xs mt-5 ml-6 lg:ml-7 ${
-                                    currentView === 'UpcomingPayouts' ? 'text-blue-950' : 'text-gray-500'
+                                    currentView === 'UpcomingPayouts' ? 'text-blue-950 font-semibold' : 'text-gray-500'
                                 }`}
                                 onClick={() => setCurrentView('UpcomingPayouts')}
                                 style={{ cursor: 'pointer' }}

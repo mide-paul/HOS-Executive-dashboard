@@ -291,7 +291,7 @@ const CompanySignup = () => {
                 <FontAwesomeIcon icon={faInfoCircle} />
                 Must match the first password input field.
               </p> */}
-                                            {error && <p className="text-red-600 text-center font-semibold lg:mt-2 xl:-mt-0.5 z-20">{error}</p>}
+                                            {error && <p className="text-red-600 text-center text-sm font-semibold lg:mt-2 xl:-mt-0.5 z-20">{error}</p>}
 
                                             <div className="flex flex-row items-center mt-5 ml-0 gap-2">
                                                 <input

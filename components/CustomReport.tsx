@@ -120,16 +120,16 @@ export default function CustomReport() {
             <table className="w-full border-collapse border border-gray-200">
                 <thead className="bg-gray-100 text-xs text-left">
                     <tr>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Client Name</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Client compliance</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Sales performance</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Partnership progress</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Client Name</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Client compliance</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Sales performance</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Partnership progress</th>
                     </tr>
                 </thead>
                 <tbody>
                     {paginatedClients.map((client) => (
                         <tr key={client.id}>
-                            <td className="border px-1 lg:px-4 py-2 flex flex-col lg:flex-row items-center space-x-3 text-left">
+                            <td className="border-b px-1 lg:px-4 py-2 flex flex-col lg:flex-row items-center space-x-3 text-left">
                                 <Image
                                     src={avatar}
                                     alt={`${client.name} Logo`}
@@ -139,19 +139,19 @@ export default function CustomReport() {
                                 />
                                 <span className="text-xs">{client.name}</span>
                             </td>
-                            <td className="border px-1 lg:px-4 py-2">
+                            <td className="border-y px-1 lg:px-4 py-0">
                                 <span className={`border px-2 py-0.5 rounded-2xl text-xs text-left ${getComplianceBgColor(
                                     client.compliance
                                 )}`}>{client.compliance}
                                 </span>
                             </td>
-                            <td className="border px-1 lg:px-4 py-2 text-xs">
+                            <td className="border-b px-1 lg:px-4 py-0 text-xs">
                                 <span className={`border px-2 py-0.5 rounded-2xl text-xs text-left ${getPerformanceBgColor(
                                     client.performance
                                 )}`}>{client.performance}
                                 </span>
                             </td>
-                            <td className="border px-1 lg:px-4 py-2">
+                            <td className="border-b px-1 lg:px-4 py-0">
                                 <div className="relative items-center">
                                     <div className="w-14 lg:w-36 bg-gray-200 rounded-lg h-4 relative text-left">
                                         <div

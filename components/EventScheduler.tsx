@@ -215,7 +215,7 @@ const Calendar: React.FC = () => {
       </section>
 
       {modal.isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
           <div className="bg-white p-4 rounded shadow-md w-72 lg:w-96">
             <h2 className="font-bold text-sm mb-4">
               {modal.event ? "Edit Event" : "Add Event"}

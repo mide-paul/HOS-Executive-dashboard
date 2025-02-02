@@ -45,7 +45,7 @@ export default function ClientTable() {
     //       setIsLoading(true);
     //       setError(null);
     //       try {
-    //         const response = await axios.get("/api/clients"); // Replace with your backend API URL
+    //         const response = await axios.get("/api/clients"); // Replace with backend API URL
     //         setClients(response.data);
     //       } catch (err) {
     //         setError("Failed to fetch clients. Please try again.");
@@ -99,7 +99,7 @@ export default function ClientTable() {
     // const handleUpdateClient = async () => {
     //     if (editableClient) {
     //       try {
-    //         await axios.put(`/api/clients/${editableClient.id}`, editableClient); // Replace with your update API
+    //         await axios.put(`/api/clients/${editableClient.id}`, editableClient); // Replace with update API
     //         setClients((prev) =>
     //           prev.map((client) =>
     //             client.id === editableClient.id ? editableClient : client
@@ -143,17 +143,17 @@ export default function ClientTable() {
             <table className="w-full lg:w-full border-collapse border border-gray-200">
                 <thead className="bg-gray-100 text-xs text-left">
                     <tr>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Client Name</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Deal Stage</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Expected Close Date</th>
-                        <th className="border px-4 py-2 font-normal">Deal Size</th>
-                        <th className="border px-1 lg:px-4 py-2 font-normal">Action</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Client Name</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Deal Stage</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Expected Close Date</th>
+                        <th className="px-4 py-2 font-normal">Deal Size</th>
+                        <th className="px-1 lg:px-4 py-2 font-normal">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {paginatedClients.map((client) => (
                         <tr key={client.id}>
-                            <td className="border px-1 py-5 lg:px-4 lg:py-2 flex flex-col lg:flex-row items-center space-x-3">
+                            <td className="border-b px-1 py-5 lg:px-4 lg:py-2 flex flex-col lg:flex-row items-center space-x-3">
                                 <Image
                                     src={doe}
                                     alt={`${client.name} Logo`}
@@ -161,12 +161,12 @@ export default function ClientTable() {
                                 />
                                 <span className="text-xs">{client.name}</span>
                             </td>
-                            <td className="border px-1 lg:px-4 py-2">
+                            <td className="border-y px-1 lg:px-4 py-2">
                                 <span className={`border px-2 py-0.5 rounded-2xl text-xs ${getDealStageBgColor(
                                     client.dealStage
                                 )}`}>{client.dealStage}
                                 </span></td>
-                            <td className="border px-1 lg:px-4 py-2">
+                            <td className="border-b px-1 lg:px-4 py-2">
                                 <div className="relative flex flex-col lg:flex-row gap-6 items-center">
                                     <div className="text-xs text-left text-gray-700 mb-1">
                                         {client.expectedCloseDate}
@@ -187,8 +187,8 @@ export default function ClientTable() {
                                     </div>
                                 </div>
                             </td>
-                            <td className="border px-4 py-2 text-xs">{client.dealSize}</td>
-                            <td className="border px-1 lg:px-4 py-2">
+                            <td className="border-b px-4 py-2 text-xs">{client.dealSize}</td>
+                            <td className="border-b px-1 lg:px-4 py-2">
                                 <button
                                     className="text-blue-500 hover:underline"
                                     onClick={() => handleEditClick(client)}
