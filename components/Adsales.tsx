@@ -31,7 +31,7 @@ interface CardProps {
     moveDeal: (id: number, category: string) => void;
 }
 
-const Card: React.FC<CardProps> = ({ deal, moveDeal }) => {
+const Card: React.FC<CardProps> = ({ deal }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "DEAL",
         item: { id: deal.id, category: deal.category },

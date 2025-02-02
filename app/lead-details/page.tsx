@@ -1,16 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Image from "next/image";
 import Sidebar from '@/components/Sidebar';
 import { Header } from '@/components/header';
-import TrainingProgress from '@/components/TrainingProgress';
-import AdCampaign from '@/components/AdCampaign';
-import EngagementHistory from '@/components/EngagementHistory';
 import client_details_frame from '../../public/images/client_details_frame.svg';
 import LeadDetailsComp from '@/components/LeadDetailsComp';
 
 const LeadsDetails = () => {
-    const [currentView, setCurrentView] = useState('TrainingProgress');
+    // const [currentView, setCurrentView] = useState('TrainingProgress');
     // const [percentage, setPercentage] = useState<number | null>(null);
     // const [loading, setLoading] = useState<boolean>(true);
     // const [error, setError] = useState<string | null>(null);
