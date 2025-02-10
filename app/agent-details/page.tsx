@@ -14,6 +14,7 @@ const AgentDetails = () => {
         email: "orlando@gmail.com",
         status: "Active",
         dateJoined: "23-01-2025",
+        accountName: "Orlando Diggs",
         accountNumber: "9078567809",
         bank: "Wells Fargo Bank"
     });
@@ -126,11 +127,15 @@ const AgentDetails = () => {
                                         </h3>
                                     </div>
                                     <div className='flex flex-col gap-1'>
-                                        <label className='text-gray-400 font-normal text-xs'>Date Joined</label>
+                                        <label className='text-gray-400 font-normal text-xs'>Date joined</label>
                                         <h3 className='text-black font-semibold text-xs'>{agent.dateJoined}</h3>
                                     </div>
                                     <div className='flex flex-col gap-1'>
-                                        <label className='text-gray-400 font-normal text-xs'>Account Number</label>
+                                        <label className='text-gray-400 font-normal text-xs'>Account name</label>
+                                        <h3 className='text-black font-semibold text-xs'>{agent.accountName}</h3>
+                                    </div>
+                                    <div className='flex flex-col gap-1'>
+                                        <label className='text-gray-400 font-normal text-xs'>Account number</label>
                                         <h3 className='text-black font-semibold text-xs'>{agent.accountNumber}</h3>
                                     </div>
                                     <div className='flex flex-col gap-1'>

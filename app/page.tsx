@@ -15,9 +15,7 @@ import youtube from './../public/icons/youtube_signup.png';
 import google from './../public/icons/google.png';
 import envelope from './../public/icons/envelope.png';
 import lock from './../public/icons/lock_dark.svg';
-// import { Icon } from 'react-icons-kit';
-// import { eyeOff } from 'react-icons-kit/feather/eyeOff';
-// import { eye } from 'react-icons-kit/feather/eye';
+import { Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "./store/authStore";
 
 const EMAIL_REGEX = /^(?=.*[a-z])(?=.*[@]).{3,23}$/;
@@ -28,6 +26,11 @@ const CompanyLogin = () => {
   const userRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const { login, error, isAuthenticated } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
@@ -182,9 +185,9 @@ const CompanyLogin = () => {
                                     </p> */}
                     </div>
 
-                    <div className="flex flex-col ml-0 mt-7 gap-1">
+                    <div className="relative flex mt-7 items-center">
                       <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         id="password"
                         placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}
@@ -193,11 +196,16 @@ const CompanyLogin = () => {
                         autoComplete="new-password"
                         aria-invalid={validPassword ? "false" : "true"}
                         aria-describedby="pwdnote"
-                        // onFocus={() => setPasswordFocus(true)}
-                        // onBlur={() => setPasswordFocus(false)}
-                        className="mt-0 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+                        className="mt-0 min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-sm text-dark bg-white border border-gray rounded pr-2"
                       />
-                      <Image src={lock} alt="" className="-mt-8 ml-2" />
+                      <Image src={lock} alt="" className="absolute left-2" />
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="relative right-7 text-gray-600"
+                      >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      </button>
                       {/* <p id="pwdnote" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
                                     <FontAwesomeIcon icon={faInfoCircle} />
                                     8 to 15 characters.<br />

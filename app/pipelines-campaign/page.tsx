@@ -18,12 +18,12 @@ const PipelinesCampaign = () => {
                 <Header />
             </div>
             {showDragFrame && (
-                <div className='absolute flex mt-10 ml-64 h-8 min-w-[1090px] bg-yellow-400 rounded'>
-                    <h3 className='p-1 ml-8 pr-16 text-sm text-black font-medium'>
+                <div className='absolute flex gap-96 mt-10 ml-64 h-8 min-w-[1090px] bg-yellow-400 rounded'>
+                    <h3 className='p-1 ml-3 pr-16 text-sm text-black font-medium'>
                         Drag to move cards
                     </h3>
                     <button
-                        className='ml-96 pl-96 mt-1 text-sm'
+                        className='ml-20 pl-96 mt-1 text-sm'
                         onClick={() => setShowDragFrame(false)}
                     >
                         X

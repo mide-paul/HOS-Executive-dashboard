@@ -14,14 +14,38 @@ interface Lead {
     firstName: string;
     lastName: string;
     company: string;
-    companySize: string;
+    companySize: number;
     source: string;
     stage: string;
-    status: "Open" | "Closed";
+    status: string;
     image: string; // Image URL for the lead
     type: string;
+    leadType: string;
     assign: string;
+    assignedTo: string;
     notes: string;
+}
+
+interface LeadApiResponse {
+    success: boolean;
+    count: number;
+    page: string;
+    limit: string;
+    data: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        company: string;
+        companySize: number;
+        source?: { name: string };
+        stage?: { name: string };
+        status: string;
+        image: string;
+        type: string;
+        assign: string;
+        assignedTo?: { identifier: string };
+        notes?: string;
+    }[];
 }
 
 interface LeadOption {
@@ -59,7 +83,7 @@ const LeadsTable: React.FC = () => {
         type: "",
         email: "",
         phone: "",
-        assign: "",
+        assignedTo: "",
         notes: "",
     });
     const [emailError, setEmailError] = useState("");
@@ -84,16 +108,38 @@ const LeadsTable: React.FC = () => {
 
     const handleAddLead = async (e: React.FormEvent) => {
         e.preventDefault();
-
+    
         // Validate email before submission
         if (!validateEmail(newLead.email)) {
             setEmailError("Please provide a valid email address");
             return;
         }
-
+    
         try {
-            await axios.post("https://api.hosoptima.com/api/v1/crm/leads/new", newLead);
-            alert("Lead added successfully!");
+            if (typeof window === "undefined") {
+                throw new Error("Client-side only logic. `window` is not available.");
+            }
+    
+            const token = localStorage.getItem("token");
+    
+            if (!token) {
+                console.error("❌ No auth token found!");
+                alert("Authentication required. Please log in again.");
+                return;
+            }
+    
+            await axios.post(
+                "https://api.hosoptima.com/api/v1/crm/leads/new",
+                newLead,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+    
+            alert("✅ Lead added successfully!");
             setNewLead({
                 firstName: "",
                 lastName: "",
@@ -106,24 +152,24 @@ const LeadsTable: React.FC = () => {
                 type: "",
                 email: "",
                 phone: "",
-                assign: "",
+                assignedTo: "",
                 notes: "",
             });
             setShowAddModal(false);
         } catch (error) {
-            console.error("Failed to add lead:", error);
+            console.error("❌ Failed to add lead:", error);
+            alert("Failed to add lead. Please try again.");
         }
     };
 
     const fetchLeads = async () => {
         setLoading(true);
         try {
-            // Ensure code runs on client-side only
             if (typeof window === "undefined") {
                 throw new Error("Client-side only logic. `window` is not available.");
             }
 
-            const token = localStorage.getItem("token");  // Updated to use "token"
+            const token = localStorage.getItem("token");
 
             if (!token) {
                 console.error("❌ No auth token found!");
@@ -132,21 +178,37 @@ const LeadsTable: React.FC = () => {
                 return;
             }
 
-            const response = await axios.get("https://api.hosoptima.com/api/v1/crm/leads", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                params: {
-                    status: "open",
-                    page: currentPage,
-                    limit: leadsPerPage,
-                },
+            const response = await axios.get<LeadApiResponse>("https://api.hosoptima.com/api/v1/crm/leads", {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { status: "open", page: currentPage, limit: leadsPerPage },
             });
 
-            console.log("✅ Leads fetched successfully:", response.data);
-            setLeads(Array.isArray(response.data.leads) ? response.data.leads : []);
-            setTotalLeads(response.data.total || 0); // Fallback to 0 if total is undefined
-        } catch (error: unknown) {
+            console.log("✅ Leads fetched successfully:", response.data.data);
+
+            if (Array.isArray(response.data.data)) {
+                const formattedLeads = response.data.data.map((lead) => ({
+                    id: lead.id,
+                    firstName: lead.firstName,
+                    lastName: lead.lastName,
+                    company: lead.company,
+                    companySize: lead.companySize,
+                    source: lead.source?.name || "N/A",
+                    stage: lead.stage?.name || "N/A",
+                    status: lead.status,
+                    image: lead.image || "N/A",
+                    type: lead.type || "N/A",
+                    leadType: lead.type || "N/A",
+                    assignedTo: lead.assignedTo?.identifier || "Unassigned",
+                    notes: lead.notes || "No notes available",
+                    assign: lead.assign || "N/A"
+                }));
+                setLeads(formattedLeads);
+                setTotalLeads(response.data.count || 0);
+            } else {
+                console.error("🚨 API response format unexpected:", response.data);
+                setLeads([]);
+            }
+        } catch (error) {
             console.error("❌ API Request Failed:", error);
             alert("Failed to fetch leads. Check console for details.");
         } finally {
@@ -243,7 +305,7 @@ const LeadsTable: React.FC = () => {
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => setShowAddModal(true)}
-                        className="px-2 py-1 text-xs bg-white text-blue-950 border border-blue-950 rounded-md"
+                        className="px-1 lg:px-2 py-1 text-xs bg-white text-blue-950 border border-blue-950 rounded-md"
                     >
                         + Add New Lead
                     </button>
@@ -257,7 +319,7 @@ const LeadsTable: React.FC = () => {
             </div>
 
             {/* Lead Table */}
-            <table className="min-w-full bg-white border">
+            <table className="min-w-[200px] lg:min-w-full bg-white border">
                 <thead>
                     <tr className="bg-gray-100 text-left text-xs">
                         <th className="p-2">Lead Name</th>
@@ -309,7 +371,7 @@ const LeadsTable: React.FC = () => {
                                             {lead.status}
                                         </span>
                                     </td>
-                                    <td className="p-2 border text-sm">
+                                    <td className="p-2 text-sm">
                                         <button
                                             onClick={() => {
                                                 setSelectedLead(lead);
@@ -406,7 +468,7 @@ const LeadsTable: React.FC = () => {
                                 required
                             />
                             <input
-                                type="text"
+                                type="number"
                                 name="companySize"
                                 value={newLead.companySize}
                                 onChange={handleInputChange}
@@ -429,8 +491,8 @@ const LeadsTable: React.FC = () => {
                                 required
                                 className="w-full border rounded-md p-2 text-xs">
                                 <option value="">Lead Type</option>
-                                <option value="Individual driver">Individual driver</option>
-                                <option value="Enterprise">Enterprise</option>
+                                <option value="individual">individual</option>
+                                <option value="company">company</option>
                             </select>
                             <input
                                 type="email"
@@ -449,8 +511,8 @@ const LeadsTable: React.FC = () => {
                                 required
                                 className="w-full border rounded-md p-2 text-xs">
                                 <option value="">Lead Source</option>
-                                <option value="Referral">Website Form</option>
-                                <option value="Ads">Linkedin</option>
+                                <option value="websiteForm">Website Form</option>
+                                <option value="linkedin">Linkedin</option>
                             </select>
                             <select
                                 name="stage"
@@ -459,8 +521,9 @@ const LeadsTable: React.FC = () => {
                                 required
                                 className="w-full border rounded-md p-2 text-xs">
                                 <option value="">Lead Stage</option>
-                                <option value="Referral">New lead</option>
-                                <option value="Ads">Qualified</option>
+                                <option value="initialContact">Initial Contact</option>
+                                <option value="newLead">New lead</option>
+                                <option value="qualified">Qualified</option>
                             </select>
                             <select
                                 name="status"
@@ -469,19 +532,18 @@ const LeadsTable: React.FC = () => {
                                 required
                                 className="w-full border rounded-md p-2 text-xs">
                                 <option value="">Lead Status</option>
-                                <option value="Open">Initial Contact</option>
-                                <option value="Open">Open</option>
-                                <option value="Closed">Closed</option>
+                                <option value="open">Open</option>
+                                <option value="closed">Closed</option>
                             </select>
                             <select
-                                name="assign"
-                                value={newLead.assign}
+                                name="assignedTo"
+                                value={newLead.assignedTo}
                                 onChange={handleInputChange}
                                 required
                                 className="w-full border rounded-md p-2 text-xs">
                                 <option value="">Assign lead</option>
-                                <option value="Open">Sarah Green</option>
-                                <option value="Closed">Mide</option>
+                                <option value="sarahGreen">Sarah Green</option>
+                                <option value="mide">Mide</option>
                             </select>
                             <textarea
                                 name="notes"
@@ -527,8 +589,8 @@ const LeadsTable: React.FC = () => {
                                     className="w-full border rounded-md p-2 text-xs"
                                 >
                                     <option value="">All</option>
-                                    <option value="Single driver">Single driver</option>
-                                    <option value="Enterprise">Enterprise</option>
+                                    <option value="individual">Single driver</option>
+                                    <option value="company">Enterprise</option>
                                 </select>
                             </div>
                             <div>

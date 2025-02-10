@@ -30,7 +30,7 @@ const Financial = () => {
                                     alt=""
                                     className="w-4 h-4 ml-3 object-cover"
                                 />
-                                <h3 className='font-normal text-black text-xs'>Total bonus earned from client aquition</h3>
+                                <h3 className='font-normal text-black text-xs'>Total bonus earned from client acquisition</h3>
                             </div>
                             <Image
                                 src={line_dark}

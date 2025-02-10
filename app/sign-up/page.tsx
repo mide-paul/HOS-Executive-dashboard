@@ -12,9 +12,7 @@ import twitter from '../../public/icons/twitter.svg';
 import instagram from '../../public/icons/instagram.svg';
 import youtube from '../../public/icons/youtube.svg';
 import google from '../../public/icons/google.png';
-// import { Icon } from 'react-icons-kit';
-// import { eyeOff } from 'react-icons-kit/feather/eyeOff';
-// import { eye } from 'react-icons-kit/feather/eye';
+import { Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "../store/authStore";
 import user from '../../public/icons/user.svg';
 import sms from '../../public/icons/sms.svg';
@@ -30,6 +28,11 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[?&()_+={}[:;'"<>,|/~!
 const CompanySignup = () => {
     const userRef = useRef<HTMLInputElement | null>(null);
     const errRef = useRef<HTMLDivElement | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const [first_name, setFirst_name] = useState('');
     const [validFirstName, setValidFirstName] = useState(false);
@@ -242,7 +245,7 @@ const CompanySignup = () => {
 
                                             <div className="flex flex-col mt-2 ml-0 gap-1">
                                                 <input
-                                                    type="password"
+                                                    type={showPassword ? "text" : "password"}
                                                     id="password"
                                                     placeholder="Password"
                                                     onChange={(e) => setPassword(e.target.value)}
@@ -256,6 +259,13 @@ const CompanySignup = () => {
                                                     className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
                                                 />
                                                 <Image src={lock} alt="" className="-mt-8 ml-2" />
+                                                <button
+                                                    type="button"
+                                                    onClick={togglePasswordVisibility}
+                                                    className=" -mt-6 lg:ml-96 lg:pl-20 text-gray-600"
+                                                >
+                                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                                </button>
                                                 {/* <span style={{ color: '#000000' }} onClick={handleToggle}>
                       <Icon className="relative s:-ml-6 s:mt-0.3 lg:-ml-6 lg:mt-0.5 z-30" icon={icon} size={20} />
                     </span> */}
@@ -269,7 +279,7 @@ const CompanySignup = () => {
 
                                             <div className="flex flex-col mt-2 ml-0 gap-1">
                                                 <input
-                                                    type="password"
+                                                    type={showPassword ? "text" : "password"}
                                                     id="confirmpassword"
                                                     placeholder="Confirm Password"
                                                     onChange={(e) => setMatchPassword(e.target.value)}
@@ -283,6 +293,13 @@ const CompanySignup = () => {
                                                     className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
                                                 />
                                                 <Image src={lock} alt="" className="-mt-8 ml-2" />
+                                                <button
+                                                    type="button"
+                                                    onClick={togglePasswordVisibility}
+                                                    className=" -mt-6 lg:ml-96 lg:pl-20 text-gray-600"
+                                                >
+                                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                                </button>
                                                 {/* <span style={{ color: '#000000' }} className="items-center" onClick={handleToggle}>
                       <Icon className="relative s:-ml-5.4 s:mt-0.5 lg:-ml-6 lg:mt-0.5 z-10" icon={icon} size={20} />
                     </span> */}
