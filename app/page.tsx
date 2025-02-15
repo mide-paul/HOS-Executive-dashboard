@@ -1,17 +1,9 @@
 'use client';
 import { useRef, useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
-// import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import logo_white from './../public/images/logo_white.png';
-import truck_white from './../public/icons/truck_white.png';
-import facebook from './../public/icons/facebook_signup2.png';
-import twitter from './../public/icons/twitter_signup.png';
-import instagram from './../public/icons/instagram_signup.png';
-import youtube from './../public/icons/youtube_signup.png';
+import logo from './../public/images/logo.png';
 import google from './../public/icons/google.png';
 import envelope from './../public/icons/envelope.png';
 import lock from './../public/icons/lock_dark.svg';
@@ -34,27 +26,12 @@ const CompanyLogin = () => {
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
-  // const [emailFocus, setEmailFocus] = useState(false);
 
   const [password, setPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
-  // const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // const [type, setType] = useState('password');
-  // //   const [icon, setIcon] = useState(eyeOff);
-
-  //   const handleToggle = () => {
-  //     if (type === 'password') {
-  //       setIcon(eye);
-  //       setType('text')
-  //     } else {
-  //       setIcon(eyeOff)
-  //       setType('password')
-  //     }
-  //   }
 
   useEffect(() => {
     if (userRef.current !== null) {
@@ -123,149 +100,108 @@ const CompanyLogin = () => {
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] min-h-[990px] lg:min-h-screen w-full p-4 pb-14 bg-white overflow-hidden">
-      <div className="ml-0 bg-blue-950 lg:-mt-0.5 min-h-[960px] lg:min-h-[575px] min-w-full lg:w-full">
-        <div className="flex flex-col lg:flex-row">
+    <div className="flex items-center justify-center min-h-screen w-full lg:bg-blue-950 p-4">
+      <div className="bg-white lg:bg-white rounded shadow p-10 max-w-[310px] lg:min-w-[500px] lg:min-h-[600px]">
+        <form onSubmit={handleLogin}>
+          <div className="flex items-center justify-self-center h-6 w-40">
+            <Image src={logo} alt="logo image" />
+          </div>
           <div>
-            <div className="pt-14 ml-4 md:ml-52 lg:ml-16 h-6 w-22">
-              <Image src={logo_white} alt="image" />
-            </div>
+            <h3 className="ml-0 mt-11 text-blue text-base font-bold">
+              Sign In
+            </h3>
+            <p className="ml-0 mt-1 pt-2 text-dark text-sm font-normal">
+              Welcome back! Please enter your details below
+            </p>
+          </div>
 
-            <div>
-              <Image src={truck_white} alt="" className="mt-24 ml-7 md:ml-52 lg:ml-16 bg-gray-500 p-5 rounded-full" />
-            </div>
+          <div className="flex flex-col mt-0 ml-0 gap-1">
+            <input
+              type="text"
+              id="email"
+              name="email"
+              placeholder="Email"
+              autoComplete="off"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              aria-invalid={validEmail ? "false" : "true"}
+              aria-describedby="uidnote"
+              className="mt-10 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+            />
+            <Image src={envelope} alt="" className="-mt-8 ml-2" />
+          </div>
 
-            <div className="gap-5 flex mt-7 ml-4 md:ml-52 lg:ml-16">
-              <Link href="https://www.facebook.com/hosoptima"><Image src={facebook} alt="" className="relative" /></Link>
-              <Link href="https://x.com/hosoptima"><Image src={twitter} alt="" className="relative" /></Link>
-              <Link href="https://www.instagram.com/hosoptima_/"><Image src={instagram} alt="" className="relative" /></Link>
-              {/* <Link href="https://www.linkedin.com/company/hosoptima/"><Image src={youtube} alt="" className="relative" /></Link> */}
-              <Image src={youtube} alt="" className="relative" />
+          <div className="relative flex mt-7 items-center">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              required
+              autoComplete="new-password"
+              aria-invalid={validPassword ? "false" : "true"}
+              aria-describedby="pwdnote"
+              className="mt-0 min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-sm text-dark bg-white border border-gray rounded pr-2"
+            />
+            <Image src={lock} alt="" className="absolute left-2" />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="relative right-7 text-gray-600"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+          {error && <p className="text-red-600 text-center text-sm font-semibold mt-2">{error}</p>}
+
+          <div>
+            <div className="flex items-center">
+              <input
+                type='checkbox'
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
+                className="mt-5 ml-0" />
+              <p className="text-black mt-5 max-w-19 ml-1 text-xs lg:text-sm text-left">
+                Remember me
+              </p>
+            </div>
+            <p className="text-blue-950 -mt-4 lg:-mt-5 max-w-19 ml-32 lg:ml-72 text-xs lg:text-sm text-left z-10 cursor-pointer">
+              Forgot Password?
+            </p>
+          </div>
+
+          <button
+            disabled={!validEmail || !validPassword ? true : false}
+            type="submit"
+            className="bg-blue-950 h-6.2 w-full p-2 ml-0 text-sm text-white rounded mt-3 cursor-pointer hover:bg-blue-900 disabled:bg-gray-400">
+            {loading ? "Signing in..." : "Sign in"}
+          </button>
+
+          <div className="flex items-center">
+            <Image src={google} alt="" className="absolute size-4 mt-3 ml-9 lg:ml-36 z-20" />
+            <div className="text-blue-950 text-sm text-center w-full pl-8 lg:pl-12 mt-3 ml-0 border font-bold p-2 w-24.2 rounded hover:bg-gray-300 cursor-pointer z-10">
+              Sign In with Google
             </div>
           </div>
 
           <div>
-            <section>
-              <div className="pb-0">
-                <div className="max-w-[310px] lg:min-w-[500px] mx-auto max-h-[590px] lg:max-h-[530px] pt-1 pb-16 p-10 mb-8 mt-6 lg:mt-16 ml-4 md:ml-48 lg:ml-60 bg-white rounded">
-                  <form onSubmit={handleLogin}>
-                    <div>
-                      <h3 className="ml-0 mt-11 text-blue text-base font-bold">
-                        Sign In
-                      </h3>
-                      <p className="ml-0 mt-1 pt-2 text-dark text-sm font-normal">
-                        Welcome back! Please enter your details below
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col mt-0 ml-0 gap-1">
-                      <input
-                        type="text"
-                        id="email"
-                        name="email"
-                        placeholder="Email"
-                        autoComplete="off"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        aria-invalid={validEmail ? "false" : "true"}
-                        aria-describedby="uidnote"
-                        // onFocus={() => setEmailFocus(true)}
-                        // onBlur={() => setEmailFocus(false)}
-                        className="mt-10 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
-                      />
-                      <Image src={envelope} alt="" className="-mt-8 ml-2" />
-                      {/* <p id="uidnote" className={emailFocus && email &&
-                                        !validEmail ? "instructions" : "offscreen"}>
-                                        <FontAwesomeIcon icon={faInfoCircle} />
-                                        4 to 24 characters.<br />
-                                        Must begin with a letter. <br />
-                                        only lowercase is allowed.
-                                        Allowed special characters: @
-                                    </p> */}
-                    </div>
-
-                    <div className="relative flex mt-7 items-center">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        placeholder="Password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        required
-                        autoComplete="new-password"
-                        aria-invalid={validPassword ? "false" : "true"}
-                        aria-describedby="pwdnote"
-                        className="mt-0 min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-sm text-dark bg-white border border-gray rounded pr-2"
-                      />
-                      <Image src={lock} alt="" className="absolute left-2" />
-                      <button
-                        type="button"
-                        onClick={togglePasswordVisibility}
-                        className="relative right-7 text-gray-600"
-                      >
-                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                      </button>
-                      {/* <p id="pwdnote" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    8 to 15 characters.<br />
-                                    Must include at least two uppercase letters, at least three lowercase letters, at least two digits and a special character.<br />
-                                </p> */}
-                    </div>
-                    {error && <p className="text-red-600 text-center text-sm font-semibold mt-2">{error}</p>}
-
-                    <div>
-                      <div className="flex items-center">
-                        <input
-                          type='checkbox'
-                          checked={rememberMe}
-                          onChange={handleRememberMeChange}
-                          className="mt-5 ml-0" />
-                        <p className="text-black mt-5 max-w-19 ml-1 text-xs lg:text-sm text-left">
-                          Remember me
-                        </p>
-                      </div>
-                      <p className="text-blue-950 -mt-4 lg:-mt-5 max-w-19 ml-32 lg:ml-72 text-xs lg:text-sm text-left z-10 cursor-pointer">
-                        Forgot Password?
-                      </p>
-                    </div>
-
-                    <button
-                      disabled={!validEmail || !validPassword ? true : false}
-                      type="submit"
-                      className="bg-blue-950 h-6.2 w-full p-2 ml-0 text-sm text-white rounded mt-3 cursor-pointer hover:bg-blue-900 disabled:bg-gray-400">
-                      {loading ? "Signing in..." : "Sign in"}
-                    </button>
-
-                    <div className="flex items-center">
-                      <Image src={google} alt="" className="absolute size-4 mt-3 ml-9 lg:ml-36 z-20" />
-                      <div className="text-blue-950 text-sm text-center w-full pl-8 lg:pl-12 mt-3 ml-0 border font-bold p-2 w-24.2 rounded hover:bg-gray-300 cursor-pointer z-10">
-                        Sign In with Google
-                      </div>
-                    </div>
-
-                    {/* <div>
-                                    <p className="relative text-dark text-sm lg:text-center lg:mt-6 xl:mt-6 xl:ml-1 xx:mt-6 xx:ml-1 z-10">
-                                        Don&apos;t have an account?
-                                        <Link href="/sign-up"><span className="text-blue font-semibold pl-0.5">
-                                            sign Up</span>
-                                        </Link>
-                                    </p>
-                                </div> */}
-                  </form>
-                </div>
-              </div>
-            </section>
+            <h3
+              className="mt-9 lg:mt-14 ml-3.5 md:ml-0 lg:ml-16 lg:text-nowrap text-center lg:text-left text-xs lg:text-sm text-black">
+              © {new Date().getFullYear()} Rights are Reserved by hosoptima.com
+            </h3>
           </div>
-        </div>
 
-        {/* <span className="items-center" onClick={handleToggle}>
-                    <Icon className="absolute lg:ml-28.7 lg:mt-19.9 z-10 xl:mt-28.3 xl:ml-24 cursor-pointer" icon={icon} size={20} />
-                </span> */}
-
-        <div>
-          <h3 className="-mt-1 lg:-mt-14 ml-3.5 md:ml-48 lg:ml-16 text-nowrap text-left text-sm text-white">© 2025 Rights are Reserved by hosoptima.com</h3>
-        </div>
+          {/* <div>
+                      <p className="relative text-dark text-sm lg:text-center lg:mt-6 xl:mt-6 xl:ml-1 xx:mt-6 xx:ml-1 z-10">
+                        Don&apos;t have an account?
+                        <Link href="/sign-up"><span className="text-blue font-semibold pl-0.5">
+                          sign Up</span>
+                        </Link>
+                      </p>
+                    </div> */}
+        </form>
       </div>
     </div>
   );
