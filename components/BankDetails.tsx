@@ -89,12 +89,12 @@ const BankDetails: React.FC = () => {
   return (
     <div>
       <div>
-        <h3 className="relative text-dark text-sm font-bold text-left lg:ml-7 lg:mt-8">
+        <h3 className="relative text-dark text-sm font-bold text-left ml-7 mt-8 lg:ml-7 lg:mt-8">
           Account Details
         </h3>
         {/* Display saved details */}
         {savedData && (
-          <div className="bg-gray-100 p-4 lg:w-96 rounded border lg:ml-7 mt-4">
+          <div className="bg-gray-100 p-4 lg:w-96 rounded border ml-7 lg:ml-7 mt-4">
             <h4 className="text-sm font-bold">Saved Account Details:</h4>
             <p className="text-xs">Name: {savedData.accountName}</p>
             <p className="text-xs">Number: {savedData.accountNumber}</p>
@@ -115,7 +115,7 @@ const BankDetails: React.FC = () => {
           <p className="text-xs text-gray-500 lg:ml-7 mt-3">No saved details available.</p>
         )} */}
         <div>
-          <form className="relative bg-white p-4 lg:w-96 h-full border rounded lg:ml-7 lg:mt-4">
+          <form className="relative bg-white p-4 w-80 lg:w-96 h-full border rounded ml-7 mt-4 lg:ml-7 lg:mt-4">
             <div className="flex flex-col gap-2">
               <label className="relative text-sm text-left">Account Name</label>
               <input
@@ -155,7 +155,7 @@ const BankDetails: React.FC = () => {
             </div>
           </form>
           <button
-            className="relative bg-blue-950 text-white text-xs w-96 lg:ml-7 h-8 lg:mt-7 rounded hover:bg-blue-900"
+            className="relative bg-blue-950 text-white text-xs w-80 lg:w-96 ml-7 mt-7 lg:ml-7 h-8 lg:mt-7 rounded hover:bg-blue-900"
             onClick={handleSave}
           >
             Save Changes

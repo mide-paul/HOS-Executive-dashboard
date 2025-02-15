@@ -36,10 +36,10 @@ const Security = () => {
     <div>
       <div>
         <div>
-          <h3 className="relative text-dark text-sm font-bold text-left lg:ml-7 lg:mt-8">Change Password</h3>
+          <h3 className="relative text-dark text-sm font-bold text-left ml-7 mt-8 lg:ml-7 lg:mt-8">Change Password</h3>
         </div>
         <div>
-          <form className="relative bg-white p-4 lg:w-96 h-full border rounded lg:ml-7 lg:mt-4">
+          <form className="relative bg-white p-4 w-80 lg:w-96 h-full border rounded ml-7 mt-4 lg:ml-7 lg:mt-4">
             <div className="flex flex-col gap-2">
               <label className="relative text-sm text-left">Current Password</label>
               <input
@@ -50,7 +50,7 @@ const Security = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="relative left-80 -mt-8 text-gray-600"
+                className="relative left-64 lg:left-80 -mt-8 text-gray-600"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -66,7 +66,7 @@ const Security = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="relative left-80 -mt-8 text-gray-600"
+                className="relative left-64 lg:left-80 -mt-8 text-gray-600"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -74,20 +74,20 @@ const Security = () => {
           </form>
         </div>
         <div>
-          <div className="relative bg-white lg:w-96 lg:h-10 p-2 pl-4 pr-4 border rounded lg:ml-7 lg:mt-5">
+          <div className="relative bg-white w-80 lg:w-96 lg:h-10 p-2 pl-4 pr-4 border rounded ml-7 mt-5 lg:ml-7 lg:mt-5">
             <div className="relative bg-gray-200 lg:w-full lg:h-6 rounded">
               <h3
                 onClick={handleLogout}
-                className="relative text-xs text-left text-gray lg:pl-8 lg:pt-1 cursor-pointer">
+                className="relative text-xs text-left text-gray pl-8 pt-1 lg:pl-8 lg:pt-1 cursor-pointer">
                 Log Out
               </h3>
-              <Image src={logout_icon} alt="" className="relative lg:-mt-4 size-4 lg:ml-2 cursor-pointer" />
-              <Image src={arrow_right} alt="" className="relative lg:-mt-4 size-4 lg:ml-80 z-10 cursor-pointer" />
+              <Image src={logout_icon} alt="" className="relative -mt-4 lg:-mt-4 ml-2 size-4 lg:ml-2 cursor-pointer" />
+              <Image src={arrow_right} alt="" className="relative -mt-4 ml-64 lg:-mt-4 size-4 lg:ml-80 z-10 cursor-pointer" />
             </div>
           </div>
         </div>
         <button
-          className="relative bg-blue-950 text-white text-xs w-96 lg:ml-7 h-8 lg:mt-7 rounded hover:bg-blue-900">
+          className="relative bg-blue-950 text-white text-xs w-80 lg:w-96 ml-7 mt-7 lg:ml-7 h-8 lg:mt-7 rounded hover:bg-blue-900">
           Save Changes
         </button>
         <div>{error}</div>
