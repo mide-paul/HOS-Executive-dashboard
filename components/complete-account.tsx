@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import logo from './.../../../public/images/logo.png';
 import google from './.../../../public/icons/google.png';
 import envelope from './.../../../public/icons/envelope.png';
@@ -11,23 +11,18 @@ import { useAuthStore } from "@/app/store/authStore";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[?&()_+={}[:;'"<>,|/~!@#$%]).{8,15}$/;
 
-
 const Login = () => {
     const userRef = useRef<HTMLInputElement | null>(null);
-    const searchParams = useSearchParams();
     const router = useRouter();
     const { setUser, error } = useAuthStore();
     const [showPassword, setShowPassword] = useState(false);
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
-
-    const [rememberMe, setRememberMe] = useState(false);
+    const [token, setToken] = useState<string | null>(null); // Store token
     const [loading, setLoading] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
 
@@ -35,54 +30,53 @@ const Login = () => {
         if (userRef.current !== null) {
             userRef.current.focus();
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
         setValidPassword(PWD_REGEX.test(password));
-    }, [password])
+    }, [password]);
 
     useEffect(() => {
-        const token = searchParams.get("token"); // Extract token from URL
-        if (!token) {
-            setFetchError("Invalid or missing token.");
-            return;
-        }
-
-        const fetchUserDetails = async () => {
+        const fetchTokenAndUser = async () => {
             try {
                 const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/verify", {
                     method: "GET",
                     headers: {
-                        "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
                 });
 
                 if (!response.ok) {
-                    throw new Error("Failed to fetch user details");
+                    throw new Error("Failed to verify user.");
                 }
 
-                const userData = await response.json();
-                setUser(userData); // Store user details in auth state
-                setEmail(userData.email); // Auto-populate email field
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setFetchError(err.message);
-                } else {
-                    setFetchError("An unexpected error occurred.");
+                const data = await response.json();
+                if (!data.token) {
+                    throw new Error("Token not received.");
                 }
+
+                setToken(data.token);
+                setUser(data); // Save user details
+                setEmail(data.email); // Auto-fill email
+            } catch (err: unknown) {
+                setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
             }
         };
 
-        fetchUserDetails();
-    }, [searchParams, setUser]);
+        fetchTokenAndUser();
+    }, [setUser]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
+        if (!token) {
+            setFetchError("No authentication token found.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            const token = searchParams.get("token"); // Get the token from the URL
             const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/complete", {
                 method: "POST",
                 headers: {
@@ -100,21 +94,13 @@ const Login = () => {
             }
 
             const data = await response.json();
-            setUser(data); // Store user data
-            router.push("/dashboard"); // Redirect after successful login
+            setUser(data);
+            router.push("/dashboard");
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setFetchError(err.message);
-            } else {
-                setFetchError("An unexpected error occurred.");
-            }
+            setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleRememberMeChange = () => {
-        setRememberMe(!rememberMe);
     };
 
     return (
@@ -124,14 +110,12 @@ const Login = () => {
                     <div className="flex items-center justify-self-center h-6 w-40">
                         <Image src={logo} alt="logo image" />
                     </div>
-                    <div>
-                        <h3 className="ml-0 mt-11 text-blue-950 lg:text-2xl font-bold">
-                            Complete your account to continue
-                        </h3>
-                        <p className="ml-0 mt-1 pt-2 text-dark text-sm font-normal">
-                            Enter the password you would like to use to login below
-                        </p>
-                    </div>
+                    <h3 className="ml-0 mt-11 text-blue-950 lg:text-2xl font-bold">
+                        Complete your account to continue
+                    </h3>
+                    <p className="ml-0 mt-1 pt-2 text-black text-sm font-normal">
+                        Enter the password you would like to use to login below
+                    </p>
 
                     {fetchError && <p className="text-red-600 text-center text-sm mt-2">{fetchError}</p>}
 
@@ -159,44 +143,26 @@ const Login = () => {
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                         </button>
                     </div>
+
                     {error && <p className="text-red-600 text-center text-xs font-semibold mt-2">{error}</p>}
 
-                    <div>
-                        <div className="flex items-center">
-                            <input
-                                type='checkbox'
-                                checked={rememberMe}
-                                onChange={handleRememberMeChange}
-                                className="mt-5 ml-0" />
-                            <p className="text-black mt-5 max-w-19 ml-1 text-xs lg:text-sm text-left">
-                                Remember me
-                            </p>
-                        </div>
-                        <p className="text-blue-950 -mt-4 lg:-mt-5 max-w-19 ml-32 lg:ml-72 text-xs lg:text-sm text-left z-10 cursor-pointer">
-                            Forgot Password?
-                        </p>
-                    </div>
-
                     <button
-                        disabled={!validPassword ? true : false}
+                        disabled={!validPassword}
                         type="submit"
-                        className="bg-blue-950 h-6.2 w-full p-2 ml-0 text-sm text-white rounded mt-3 cursor-pointer hover:bg-blue-900 disabled:bg-gray-400">
+                        className="bg-blue-950 h-6.2 w-full p-2 text-sm text-white rounded mt-3 cursor-pointer hover:bg-blue-900 disabled:bg-gray-400">
                         {loading ? "Signing in..." : "Sign in"}
                     </button>
 
                     <div className="flex items-center">
                         <Image src={google} alt="" className="absolute size-4 mt-3 ml-9 lg:ml-36 z-20" />
-                        <div className="text-blue-950 text-sm text-center w-full pl-8 lg:pl-12 mt-3 ml-0 border font-bold p-2 w-24.2 rounded hover:bg-gray-300 cursor-pointer z-10">
+                        <div className="text-blue-950 text-sm text-center w-full pl-8 lg:pl-12 mt-3 border font-bold p-2 w-24.2 rounded hover:bg-gray-300 cursor-pointer z-10">
                             Sign In with Google
                         </div>
                     </div>
 
-                    <div>
-                        <h3
-                            className="mt-9 lg:mt-14 ml-3.5 md:ml-0 lg:ml-16 lg:text-nowrap text-center lg:text-left text-xs lg:text-sm text-black">
-                            © {new Date().getFullYear()} Rights are Reserved by hosoptima.com
-                        </h3>
-                    </div>
+                    <h3 className="mt-9 lg:mt-14 ml-3.5 md:ml-0 lg:ml-16 text-xs lg:text-sm text-black text-center">
+                        © {new Date().getFullYear()} Rights are Reserved by hosoptima.com
+                    </h3>
                 </form>
             </div>
         </div>
