@@ -110,7 +110,7 @@ const CompanyLogin = () => {
             <h3 className="ml-0 mt-11 text-blue text-base font-bold">
               Sign In
             </h3>
-            <p className="ml-0 mt-1 pt-2 text-dark text-sm font-normal">
+            <p className="ml-0 mt-1 pt-2 text-black text-sm font-normal">
               Welcome back! Please enter your details below
             </p>
           </div>
