@@ -16,6 +16,13 @@ interface Agent {
 }
 
 const SalesAgentsTable: React.FC = () => {
+    // const [agents, setAgents] = useState<Agent[]>([]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [showActionModal, setShowActionModal] = useState<boolean>(false);
+    const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
+    // const [loading, setLoading] = useState<boolean>(true);
+    // const [error, setError] = useState<string | null>(null);
+
     const [agents, setAgents] = useState<Agent[]>(
         Array.from({ length: 100 }, (_, i) => ({
             id: i + 1,
@@ -27,12 +34,28 @@ const SalesAgentsTable: React.FC = () => {
         }))
     );
 
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [showActionModal, setShowActionModal] = useState<boolean>(false);
-    const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
-
     const agentsPerPage = 10;
     const totalPages = Math.ceil(agents.length / agentsPerPage);
+
+    // useEffect(() => {
+    //     const fetchAgents = async () => {
+    //         try {
+    //             setLoading(true);
+    //             const response = await fetch("http://localhost:3000/api/v1/sales-agents");
+    //             if (!response.ok) {
+    //                 throw new Error("Failed to fetch agents");
+    //             }
+    //             const data = await response.json();
+    //             setAgents(data);
+    //         } catch (err: any) {
+    //             setError(err.message);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchAgents();
+    // }, []);
 
     const paginatedAgents = agents.slice(
         (currentPage - 1) * agentsPerPage,
@@ -66,6 +89,14 @@ const SalesAgentsTable: React.FC = () => {
             setShowActionModal(false);
         }
     };
+
+    // if (loading) {
+    //     return <p className="text-center">Loading...</p>;
+    // }
+
+    // if (error) {
+    //     return <p className="text-center text-red-500">{error}</p>;
+    // }
 
     // const API_BASE_URL = "https://api.hosoptima.com/api";
 

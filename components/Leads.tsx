@@ -8,6 +8,7 @@ import avatar from './../public/images/avatar.svg';
 import action from './../public/icons/action.svg';
 import arrow_left from './../public/icons/arrow_left.svg';
 import arrow_right from './../public/icons/arrow_right.svg';
+import AddNewLead from "@/modals/AddNewLead";
 
 interface Lead {
     id: number;
@@ -26,28 +27,6 @@ interface Lead {
     notes: string;
 }
 
-interface LeadApiResponse {
-    success: boolean;
-    count: number;
-    page: string;
-    limit: string;
-    data: {
-        id: number;
-        firstName: string;
-        lastName: string;
-        company: string;
-        companySize: number;
-        source?: { name: string };
-        stage?: { name: string };
-        status: string;
-        image: string;
-        type: string;
-        assign: string;
-        assignedTo?: { identifier: string };
-        notes?: string;
-    }[];
-}
-
 interface LeadOption {
     id: number;
     name: string;
@@ -56,165 +35,88 @@ interface LeadOption {
 const LeadsTable: React.FC = () => {
 
     // integrate endpoints
-    const [leads, setLeads] = useState<Lead[]>([]);
+    const [leads, ] = useState<Lead[]>([]);
     const [leadSources, setLeadSources] = useState<LeadOption[]>([]);
     const [leadStages, setLeadStages] = useState<LeadOption[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalLeads, setTotalLeads] = useState<number>(0);
+    const [totalLeads, ] = useState<number>(0);
     const [leadsPerPage] = useState<number>(10);
     const [filter, setFilter] = useState({
-        type: "",
-        source: "",
-        stage: "",
+        leadType: "",
+        sourceID: "",
+        stageID: "",
         status: "",
     });
 
     const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
-    const [showAddModal, setShowAddModal] = useState<boolean>(false);
-    const [newLead, setNewLead] = useState({
-        firstName: "",
-        lastName: "",
-        company: "",
-        companySize: "",
-        source: "",
-        stage: "",
-        status: "",
-        image: "",
-        type: "",
-        email: "",
-        phone: "",
-        assignedTo: "",
-        notes: "",
-    });
-    const [emailError, setEmailError] = useState("");
     const [showActionModal, setShowActionModal] = useState<boolean>(false);
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, ] = useState<boolean>(false);
 
-    const validateEmail = (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
+    // const fetchLeads = async () => {
+    //     setLoading(true);
+    //     try {
+    //         if (typeof window === "undefined") {
+    //             throw new Error("Client-side only logic. `window` is not available.");
+    //         }
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setNewLead((prev) => ({ ...prev, [name]: value }));
+    //         const token = localStorage.getItem("token");
 
-        // Validate email as the user types
-        if (name === "email") {
-            setEmailError(validateEmail(value) ? "" : "Invalid email address");
-        }
-    };
+    //         if (!token) {
+    //             console.error("❌ No auth token found!");
+    //             alert("Authentication required. Please log in again.");
+    //             setLoading(false);
+    //             return;
+    //         }
 
-    const handleAddLead = async (e: React.FormEvent) => {
-        e.preventDefault();
-    
-        // Validate email before submission
-        if (!validateEmail(newLead.email)) {
-            setEmailError("Please provide a valid email address");
-            return;
-        }
-    
-        try {
-            if (typeof window === "undefined") {
-                throw new Error("Client-side only logic. `window` is not available.");
-            }
-    
-            const token = localStorage.getItem("token");
-    
-            if (!token) {
-                console.error("❌ No auth token found!");
-                alert("Authentication required. Please log in again.");
-                return;
-            }
-    
-            await axios.post(
-                "https://api.hosoptima.com/api/v1/crm/leads/new",
-                newLead,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-    
-            alert("✅ Lead added successfully!");
-            setNewLead({
-                firstName: "",
-                lastName: "",
-                company: "",
-                companySize: "",
-                source: "",
-                stage: "",
-                status: "",
-                image: "",
-                type: "",
-                email: "",
-                phone: "",
-                assignedTo: "",
-                notes: "",
-            });
-            setShowAddModal(false);
-        } catch (error) {
-            console.error("❌ Failed to add lead:", error);
-            alert("Failed to add lead. Please try again.");
-        }
-    };
+    //         const response = await axios.get<LeadApiResponse>("https://api.hosoptima.com/api/v1/crm/leads", {
+    //             headers: { Authorization: `Bearer ${token}` },
+    //             params: { status: "open", page: currentPage, limit: leadsPerPage },
+    //         });
 
-    const fetchLeads = async () => {
-        setLoading(true);
-        try {
-            if (typeof window === "undefined") {
-                throw new Error("Client-side only logic. `window` is not available.");
-            }
+    //         await axios.post(
+    //             "https://api.hosoptima.com/api/v1/crm/leads/new",
+    //             newLead,
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                     "Content-Type": "application/json",
+    //                 },
+    //             }
+    //         );
 
-            const token = localStorage.getItem("token");
+    //         console.log("✅ Leads fetched successfully:", response.data.data);
 
-            if (!token) {
-                console.error("❌ No auth token found!");
-                alert("Authentication required. Please log in again.");
-                setLoading(false);
-                return;
-            }
-
-            const response = await axios.get<LeadApiResponse>("https://api.hosoptima.com/api/v1/crm/leads", {
-                headers: { Authorization: `Bearer ${token}` },
-                params: { status: "open", page: currentPage, limit: leadsPerPage },
-            });
-
-            console.log("✅ Leads fetched successfully:", response.data.data);
-
-            if (Array.isArray(response.data.data)) {
-                const formattedLeads = response.data.data.map((lead) => ({
-                    id: lead.id,
-                    firstName: lead.firstName,
-                    lastName: lead.lastName,
-                    company: lead.company,
-                    companySize: lead.companySize,
-                    source: lead.source?.name || "N/A",
-                    stage: lead.stage?.name || "N/A",
-                    status: lead.status,
-                    image: lead.image || "N/A",
-                    type: lead.type || "N/A",
-                    leadType: lead.type || "N/A",
-                    assignedTo: lead.assignedTo?.identifier || "Unassigned",
-                    notes: lead.notes || "No notes available",
-                    assign: lead.assign || "N/A"
-                }));
-                setLeads(formattedLeads);
-                setTotalLeads(response.data.count || 0);
-            } else {
-                console.error("🚨 API response format unexpected:", response.data);
-                setLeads([]);
-            }
-        } catch (error) {
-            console.error("❌ API Request Failed:", error);
-            alert("Failed to fetch leads. Check console for details.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    //         if (Array.isArray(response.data.data)) {
+    //             const formattedLeads = response.data.data.map((lead) => ({
+    //                 id: lead.id,
+    //                 firstName: lead.firstName,
+    //                 lastName: lead.lastName,
+    //                 company: lead.company,
+    //                 companySize: lead.companySize,
+    //                 source: lead.source?.name || "N/A",
+    //                 stage: lead.stage?.name || "N/A",
+    //                 status: lead.status,
+    //                 image: lead.image || "N/A",
+    //                 type: lead.type || "N/A",
+    //                 leadType: lead.type || "N/A",
+    //                 assignedTo: lead.assignedTo?.identifier || "Unassigned",
+    //                 notes: lead.notes || "No notes available",
+    //                 assign: lead.assign || "N/A"
+    //             }));
+    //             setLeads(formattedLeads);
+    //             setTotalLeads(response.data.count || 0);
+    //         } else {
+    //             console.error("🚨 API response format unexpected:", response.data);
+    //             setLeads([]);
+    //         }
+    //     } catch (error) {
+    //         console.error("❌ API Request Failed:", error);
+    //         alert("Failed to fetch leads. Check console for details.");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     // Fetch Lead Sources
     const fetchLeadSources = async () => {
@@ -236,9 +138,9 @@ const LeadsTable: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        fetchLeads();
-    }, [currentPage, filter]);
+    // useEffect(() => {
+    //     fetchLeads();
+    // }, [currentPage, filter]);
 
     useEffect(() => {
         fetchLeadSources();
@@ -260,8 +162,8 @@ const LeadsTable: React.FC = () => {
     // Filtered leads based on selected filters
     const filteredLeads = Array.isArray(leads) ? leads.filter((lead) => {
         return (
-            (filter.type ? lead.type === filter.type : true) &&
-            (filter.source ? lead.source === filter.source : true) &&
+            (filter.leadType ? lead.type === filter.leadType : true) &&
+            (filter.sourceID ? lead.source === filter.sourceID : true) &&
             (filter.status ? lead.status === filter.status : true)
         );
     }) : []; // Safe fallback
@@ -303,12 +205,7 @@ const LeadsTable: React.FC = () => {
                         {filteredLeads.length} Users</span>
                 </h1>
                 <div className="flex items-center gap-4">
-                    <button
-                        onClick={() => setShowAddModal(true)}
-                        className="px-1 lg:px-2 py-1 text-xs bg-white text-blue-950 border border-blue-950 rounded-md"
-                    >
-                        + Add New Lead
-                    </button>
+                    <AddNewLead />
                     <button
                         onClick={() => setShowFilterModal(true)}
                         className="px-2 py-1 text-xs bg-white text-gray-700 border border-gray-300 rounded-md"
@@ -434,144 +331,6 @@ const LeadsTable: React.FC = () => {
                 </div>
             </div>
 
-            {/* Add New Lead Modal */}
-            {showAddModal && (
-                <div className="fixed inset-0 lg:mt-0 bg-black bg-opacity-50 flex justify-center items-center overflow-y-scroll z-30">
-                    <div className="bg-white p-6 mt-20 rounded-lg shadow-lg max-w-lg w-full">
-                        <h2 className="text-sm font-semibold mb-4">Add New Lead</h2>
-                        <form onSubmit={handleAddLead} className="space-y-3">
-                            <input
-                                type="text"
-                                name="firstName"
-                                value={newLead.firstName}
-                                onChange={handleInputChange}
-                                placeholder="First Name"
-                                className="w-full border rounded-md p-2 text-xs"
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="lastName"
-                                value={newLead.lastName}
-                                onChange={handleInputChange}
-                                placeholder="Last Name"
-                                className="w-full border rounded-md p-2 text-xs"
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="company"
-                                value={newLead.company}
-                                onChange={handleInputChange}
-                                placeholder="Company Name (optional)"
-                                className="w-full border rounded-md p-2 text-xs"
-                                required
-                            />
-                            <input
-                                type="number"
-                                name="companySize"
-                                value={newLead.companySize}
-                                onChange={handleInputChange}
-                                placeholder="Company Size (optional)"
-                                className="w-full border rounded-md p-2 text-xs"
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="phone"
-                                value={newLead.phone}
-                                onChange={handleInputChange}
-                                placeholder="Phone Number"
-                                className="w-full border rounded-md p-2 text-xs"
-                            />
-                            <select
-                                name="type"
-                                value={newLead.type}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full border rounded-md p-2 text-xs">
-                                <option value="">Lead Type</option>
-                                <option value="individual">individual</option>
-                                <option value="company">company</option>
-                            </select>
-                            <input
-                                type="email"
-                                name="email"
-                                value={newLead.email}
-                                onChange={handleInputChange}
-                                placeholder="Email"
-                                className={`w-full border rounded-md p-2 text-xs ${emailError ? "border-red-500" : ""}`}
-                                required
-                            />
-                            {emailError && <p className="text-red-500 text-xs">{emailError}</p>}
-                            <select
-                                name="source"
-                                value={newLead.source}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full border rounded-md p-2 text-xs">
-                                <option value="">Lead Source</option>
-                                <option value="websiteForm">Website Form</option>
-                                <option value="linkedin">Linkedin</option>
-                            </select>
-                            <select
-                                name="stage"
-                                value={newLead.stage}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full border rounded-md p-2 text-xs">
-                                <option value="">Lead Stage</option>
-                                <option value="initialContact">Initial Contact</option>
-                                <option value="newLead">New lead</option>
-                                <option value="qualified">Qualified</option>
-                            </select>
-                            <select
-                                name="status"
-                                value={newLead.status}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full border rounded-md p-2 text-xs">
-                                <option value="">Lead Status</option>
-                                <option value="open">Open</option>
-                                <option value="closed">Closed</option>
-                            </select>
-                            <select
-                                name="assignedTo"
-                                value={newLead.assignedTo}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full border rounded-md p-2 text-xs">
-                                <option value="">Assign lead</option>
-                                <option value="sarahGreen">Sarah Green</option>
-                                <option value="mide">Mide</option>
-                            </select>
-                            <textarea
-                                name="notes"
-                                placeholder="Notes"
-                                value={newLead.notes} // Assuming "notes" would map to some field
-                                onChange={handleInputChange}
-                                className="w-full border rounded-md p-2 text-xs resize-none"
-                            ></textarea>
-                            <div className="flex justify-end gap-4">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowAddModal(false)}
-                                    className="px-4 py-2 bg-gray-300 rounded-md text-xs"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-blue-950 text-white rounded-md text-xs hover:bg-blue-900"
-                                >
-                                    Save
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
             {/* Filter Modal */}
             {showFilterModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30">
@@ -584,7 +343,7 @@ const LeadsTable: React.FC = () => {
                                 </label>
                                 <select
                                     id="type"
-                                    value={filter.type}
+                                    value={filter.leadType}
                                     onChange={(e) => handleFilterChange(e, "type")}
                                     className="w-full border rounded-md p-2 text-xs"
                                 >
@@ -599,7 +358,7 @@ const LeadsTable: React.FC = () => {
                                 </label>
                                 <select
                                     id="source"
-                                    value={filter.source}
+                                    value={filter.sourceID}
                                     onChange={(e) => handleFilterChange(e, "source")}
                                     className="w-full border rounded-md p-2 text-xs"
                                 >

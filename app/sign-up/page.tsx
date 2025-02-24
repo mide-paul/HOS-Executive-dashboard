@@ -3,8 +3,6 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo_white from '../../public/images/logo_white.png';
 import truck_white from '../../public/icons/truck_white.svg';
 import facebook from '../../public/icons/facebook.svg';
@@ -36,45 +34,26 @@ const CompanySignup = () => {
 
     const [first_name, setFirst_name] = useState('');
     const [validFirstName, setValidFirstName] = useState(false);
-    //const [companyNameFocus, setcompanyNameFocus] = useState(false);
 
     const [last_name, setLast_name] = useState('');
     const [validLastName, setValidLastName] = useState(false);
-    //const [companyNameFocus, setcompanyNameFocus] = useState(false);
 
     const [email, setEmail] = useState("");
     const [validEmail, setValidEmail] = useState(false);
-    //const [emailFocus, setemailFocus] = useState(false);
 
     const [phone, setPhone] = useState("");
     const [validPhone, setValidPhone] = useState(false);
-    // const [phoneFocus, setPhoneFocus] = useState(false);
 
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
-    //const [passwordFocus, setPasswordFocus] = useState(false);
 
     const [matchPassword, setMatchPassword] = useState('');
     const [validMatch, setValidMatch] = useState(false);
-    //const [matchFocus, setMatchFocus] = useState(false);
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
-    // const [type, setType] = useState('password');
-    // // const [icon, setIcon] = useState(eyeOff);
-
     const { signup, error } = useAuthStore();
-
-    // const handleToggle = () => {
-    //   if (type === 'password') {
-    //     setIcon(eye);
-    //     setType('text')
-    //   } else {
-    //     setIcon(eyeOff)
-    //     setType('password')
-    //   }
-    // }
 
     useEffect(() => {
         if (userRef.current !== null) {
@@ -147,7 +126,7 @@ const CompanySignup = () => {
                             <section>
                                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                                 <div className="pl-0 ml-0 md:ml-48 lg:ml-4 lg:pl-60 pb-0">
-                                    <div className="max-w-[310px] lg:max-w-xl mx-auto max-h-[590px] lg:max-h-[530px] pt-1 pb-16 p-10 mb-8 mt-6 ml-4 lg:ml-14 bg-white rounded">
+                                    <div className="w-full lg:max-w-xl mx-auto max-h-[590px] lg:max-h-[530px] pt-1 pb-16 p-10 mb-8 mt-6 ml-0 lg:ml-14 bg-white rounded">
                                         <form onSubmit={handleSignup}>
                                             <div>
                                                 <h3 className="ml-0 mt-4 text-blue text-base font-bold">
@@ -167,19 +146,10 @@ const CompanySignup = () => {
                                                     required
                                                     aria-invalid={validFirstName ? "false" : "true"}
                                                     aria-describedby="uidnote"
-                                                    // onFocus={() => setcompanyNameFocus(true)}
-                                                    // onBlur={() => setcompanyNameFocus(false)}
                                                     className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
                                                 />
                                                 <Image src={user} alt="" className="-mt-8 ml-2" />
                                             </div>
-                                            {/* <p id="uidnote" className={companyNameFocus && companyName && !validCompanyName ? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                2 to 40 characters.<br />
-                Must begin with a letter.<br />
-                Letters, numbers, underscores, hyphens allowed.
-              </p> */}
-
                                             <div className="flex flex-col mt-2 ml-0 gap-1">
                                                 <input
                                                     type="lastname"
@@ -191,8 +161,6 @@ const CompanySignup = () => {
                                                     required
                                                     aria-invalid={validLastName ? "false" : "true"}
                                                     aria-describedby="uidnote"
-                                                    // onFocus={() => setlastNameFocus(true)}
-                                                    // onBlur={() => setlastNameFocus(false)}
                                                     className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
                                                 />
                                                 <Image src={user} alt="" className="-mt-8 ml-2" />
@@ -210,19 +178,9 @@ const CompanySignup = () => {
                                                     required
                                                     aria-invalid={validEmail ? "false" : "true"}
                                                     aria-describedby="uidnote"
-                                                    // onFocus={() => setEmailFocus(true)}
-                                                    // onBlur={() => setEmailFocus(false)}
                                                     className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
                                                 />
                                                 <Image src={sms} alt="" className="-mt-8 ml-2" />
-                                                {/* <p id="uidnote" className={emailFocus && email &&
-                  !validemail ? "instructions" : "offscreen"}>
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                  4 to 24 characters.<br />
-                  Must begin with a letter. <br />
-                  only lowercase is allowed.
-                  Allowed special characters: @
-                </p> */}
                                             </div>
 
                                             <div className="flex flex-col mt-2 ml-0 gap-1">
@@ -236,14 +194,12 @@ const CompanySignup = () => {
                                                     required
                                                     aria-invalid={validPhone ? "false" : "true"}
                                                     aria-describedby="uidnote"
-                                                    // onFocus={() => setphoneFocus(true)}
-                                                    // onBlur={() => setphoneFocus(false)}
                                                     className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
                                                 />
                                                 <Image src={call} alt="" className="-mt-8 ml-2 size-5" />
                                             </div>
 
-                                            <div className="flex flex-col mt-2 ml-0 gap-1">
+                                            <div className="relative flex items-center mt-6">
                                                 <input
                                                     type={showPassword ? "text" : "password"}
                                                     id="password"
@@ -252,32 +208,19 @@ const CompanySignup = () => {
                                                     value={password}
                                                     required
                                                     autoComplete="new-password"
-                                                    aria-invalid={validPassword ? "false" : "true"}
-                                                    aria-describedby="pwdnote"
-                                                    // onFocus={() => setPasswordFocus(true)}
-                                                    // onBlur={() => setPasswordFocus(false)}
-                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+                                                    className="w-full p-2 pl-8 pr-10 text-sm text-dark bg-white border border-gray rounded"
                                                 />
-                                                <Image src={lock} alt="" className="-mt-8 ml-2" />
+                                                <Image src={lock} alt="" className="absolute left-2 top-1/2 -translate-y-1/2 size-5" />
                                                 <button
                                                     type="button"
                                                     onClick={togglePasswordVisibility}
-                                                    className=" -mt-6 lg:ml-96 lg:pl-20 text-gray-600"
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
                                                 >
                                                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                                 </button>
-                                                {/* <span style={{ color: '#000000' }} onClick={handleToggle}>
-                      <Icon className="relative s:-ml-6 s:mt-0.3 lg:-ml-6 lg:mt-0.5 z-30" icon={icon} size={20} />
-                    </span> */}
                                             </div>
-                                            {/* <p id="pwdnote" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                8 to 15 characters.<br />
-                Must include uppercase and lowercase letters, a number and a special character.
-                Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-              </p> */}
 
-                                            <div className="flex flex-col mt-2 ml-0 gap-1">
+                                            <div className="relative flex items-center mt-4">
                                                 <input
                                                     type={showPassword ? "text" : "password"}
                                                     id="confirmpassword"
@@ -286,28 +229,17 @@ const CompanySignup = () => {
                                                     value={matchPassword}
                                                     required
                                                     autoComplete="new-password"
-                                                    aria-invalid={validPassword ? "false" : "true"}
-                                                    aria-describedby="pwdnote"
-                                                    // onFocus={() => setPasswordFocus(true)}
-                                                    // onBlur={() => setPasswordFocus(false)}
-                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+                                                    className="w-full p-2 pl-8 pr-10 text-sm text-dark bg-white border border-gray rounded"
                                                 />
-                                                <Image src={lock} alt="" className="-mt-8 ml-2" />
+                                                <Image src={lock} alt="" className="absolute left-2 top-1/2 -translate-y-1/2 size-5" />
                                                 <button
                                                     type="button"
                                                     onClick={togglePasswordVisibility}
-                                                    className=" -mt-6 lg:ml-96 lg:pl-20 text-gray-600"
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
                                                 >
                                                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                                 </button>
-                                                {/* <span style={{ color: '#000000' }} className="items-center" onClick={handleToggle}>
-                      <Icon className="relative s:-ml-5.4 s:mt-0.5 lg:-ml-6 lg:mt-0.5 z-10" icon={icon} size={20} />
-                    </span> */}
                                             </div>
-                                            {/* <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                Must match the first password input field.
-              </p> */}
                                             {error && <p className="text-red-600 text-center text-sm font-semibold lg:mt-2 xl:-mt-0.5 z-20">{error}</p>}
 
                                             <div className="flex flex-row items-center mt-5 ml-0 gap-2">
@@ -327,9 +259,9 @@ const CompanySignup = () => {
                                                 Sign Up
                                             </button>
 
-                                            <div className="flex items-center">
-                                                <Image src={google} alt="" className="absolute size-4 mt-3 ml-9 lg:ml-40 z-20" />
-                                                <div className="text-blue-950 text-sm text-center w-full pl-8 lg:pl-6 mt-3 ml-0 border font-bold p-2 w-24.2 rounded hover:bg-gray-300 cursor-pointer z-10">
+                                            <div className="relative flex items-center mt-3">
+                                                <Image src={google} alt="" className="absolute left-8 size-4" />
+                                                <div className="text-blue-950 text-sm text-center w-full border font-bold p-2 w-24.2 rounded hover:bg-gray-300 cursor-pointer">
                                                     Sign Up with Google
                                                 </div>
                                             </div>

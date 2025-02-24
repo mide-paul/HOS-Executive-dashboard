@@ -28,7 +28,7 @@ const Sidebar = () => {
   return (
     <>
       <button
-        className="p-3 text-white fixed top-4 left-80 pl-6 z-30 md:hidden"
+        className="p-3 text-white fixed top-4 left-72 pl-3 z-30 md:hidden"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         <Image src={sort} alt="hamburger" className="w-6 h-6 object-cover" />
@@ -50,7 +50,7 @@ const Sidebar = () => {
                 }`}
               >
                 <div className="flex items-center">
-                  <span className="material-icons mr-3">{tab.icon}</span>
+                  <span className="material-icons mr-3 text-xs">{tab.icon}</span>
                   {tab.name}
                 </div>
               </a>
