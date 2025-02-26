@@ -56,20 +56,20 @@ const AddNewLead = () => {
         }
     };
 
-    // // Fetch assigned to
-    // const fetchAssignedTo = async () => {
-    //     try {
-    //         const response = await axios.get("http://localhost:3000/api/v1/sales-agents");
-    //         setAssignedTo(response.data);
-    //     } catch (error) {
-    //         console.error("Failed to fetch lead stages:", error);
-    //     }
-    // };
+    // Fetch sales executives
+    const fetchAssignedTo = async () => {
+        try {
+            const response = await axios.get("https://api.hosoptima.com/api/v1/sales/get-sales-executives");
+            setAssignedTo(response.data);
+        } catch (error) {
+            console.error("Failed to fetch sales executives:", error);
+        }
+    };
 
     useEffect(() => {
         fetchLeadSources();
         fetchLeadStages();
-        // fetchAssignedTo();
+        fetchAssignedTo();
     }, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -258,7 +258,11 @@ const AddNewLead = () => {
                                 required
                                 className="w-full border rounded-md p-2 mb-2 text-xs">
                                 <option value="">Assign Lead</option>
-                                <option value="open">Green</option>
+                                {assignedTo.map((assign) => (
+                                    <option key={assign.id} value={assign.id}>
+                                        {assign.name}
+                                    </option>
+                                ))}
                             </select>
                             <textarea
                                 name="notes"

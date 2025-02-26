@@ -22,7 +22,6 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
-    const [token, setToken] = useState<string | null>(null); // Store token
     const [loading, setLoading] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
 
@@ -37,7 +36,7 @@ const Login = () => {
     }, [password]);
 
     useEffect(() => {
-        const fetchTokenAndUser = async () => {
+        const fetchUser = async () => {
           try {
             const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/verify", {
               method: "GET",
@@ -53,12 +52,6 @@ const Login = () => {
       
             const data = await response.json();
             
-            // Assuming you want to check that token exists; if not, throw an error.
-            if (!data.token) {
-              throw new Error("Token not received.");
-            }
-            
-            setToken(data.token);
             setUser(data); // Save user details
             setEmail(data.email); // Auto-fill email
           } catch (err: unknown) {
@@ -66,18 +59,12 @@ const Login = () => {
           }
         };
       
-        fetchTokenAndUser();
-      }, []);
+        fetchUser();
+      }, [setUser]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-
-        if (!token) {
-            setFetchError("No authentication token found.");
-            setLoading(false);
-            return;
-        }
 
         try {
             const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/complete", {
@@ -88,7 +75,6 @@ const Login = () => {
                 body: JSON.stringify({
                     email,
                     password,
-                    token, // Send token for authentication
                 }),
             });
 
