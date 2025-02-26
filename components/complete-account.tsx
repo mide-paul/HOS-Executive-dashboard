@@ -38,33 +38,36 @@ const Login = () => {
 
     useEffect(() => {
         const fetchTokenAndUser = async () => {
-            try {
-                const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/verify", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error("Failed to verify user.");
-                }
-
-                const data = await response.json();
-                if (!data.token) {
-                    throw new Error("Token not received.");
-                }
-
-                setToken(data.token);
-                setUser(data); // Save user details
-                setEmail(data.email); // Auto-fill email
-            } catch (err: unknown) {
-                setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
+          try {
+            const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/verify", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: 'include'  // This ensures cookies and credentials are sent
+            });
+      
+            if (!response.ok) {
+              throw new Error("Failed to verify user.");
             }
+      
+            const data = await response.json();
+            
+            // Assuming you want to check that token exists; if not, throw an error.
+            if (!data.token) {
+              throw new Error("Token not received.");
+            }
+            
+            setToken(data.token);
+            setUser(data); // Save user details
+            setEmail(data.email); // Auto-fill email
+          } catch (err: unknown) {
+            setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
+          }
         };
-
+      
         fetchTokenAndUser();
-    }, [setUser]);
+      }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
