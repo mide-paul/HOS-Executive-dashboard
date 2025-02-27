@@ -83,7 +83,7 @@ const Login = () => {
             }
 
             const data = await response.json();
-            setUser(data);
+            setUser(data.data);
             router.push("/dashboard");
         } catch (err: unknown) {
             setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
