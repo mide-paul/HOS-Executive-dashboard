@@ -52,8 +52,8 @@ const Login = () => {
       
             const data = await response.json();
             
-            setUser(data); // Save user details
-            setEmail(data.email); // Auto-fill email
+            setUser(data.data); // Save user details
+            setEmail(data.data.email); // Auto-fill email
           } catch (err: unknown) {
             setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
           }
@@ -109,10 +109,10 @@ const Login = () => {
                     {fetchError && <p className="text-red-600 text-center text-sm mt-2">{fetchError}</p>}
 
                     <div className="flex flex-col mt-6 gap-1">
-                        <div className="p-2 pl-8 text-sm text-gray-500 bg-gray-300 border rounded">
+                        <div className="p-2 pl-8 text-xs lg:text-sm text-gray-500 bg-gray-300 border rounded">
                             {email || "example@email.com"}
                         </div>
-                        <Image src={envelope} alt="email-icon" className="-mt-8 ml-2" />
+                        <Image src={envelope} alt="email-icon" className="-mt-7 lg:-mt-8 ml-2" />
                     </div>
 
                     <div className="relative flex mt-7 items-center">
@@ -122,7 +122,7 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             value={password}
                             required
-                            className="min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-sm text-dark bg-white border rounded pr-2"
+                            className="min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-xs lg:text-sm text-dark bg-white border rounded pr-2"
                         />
                         <Image src={lock} alt="lock-icon" className="absolute left-2" />
                         <button
