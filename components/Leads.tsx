@@ -208,7 +208,7 @@ const LeadsTable: React.FC = () => {
                     <AddNewLead />
                     <button
                         onClick={() => setShowFilterModal(true)}
-                        className="px-2 py-1 text-xs bg-white text-gray-700 border border-gray-300 rounded-md"
+                        className="px-2 py-2 text-xs bg-white text-gray-700 border border-gray-300 rounded-md"
                     >
                         Filters
                     </button>

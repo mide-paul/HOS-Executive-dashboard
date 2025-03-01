@@ -139,7 +139,7 @@ const AddNewLead = () => {
         <div>
             <button
                 onClick={() => setShowAddModal(true)}
-                className="px-1 lg:px-2 py-1 text-xs bg-white text-blue-950 border border-blue-950 rounded-md"
+                className="px-1 lg:px-2 py-2 text-xs bg-white text-blue-950 border border-blue-950 rounded-md"
             >
                 + Add New Lead
             </button>
