@@ -28,7 +28,7 @@ const Sidebar = () => {
   return (
     <>
       <button
-        className="p-3 text-white fixed top-4 left-72 pl-3 z-30 md:hidden"
+        className="p-3 text-white fixed top-4 left-64 pl-3 z-30 md:hidden"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         <Image src={sort} alt="hamburger" className="w-6 h-6 object-cover" />

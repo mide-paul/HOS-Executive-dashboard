@@ -118,19 +118,19 @@ export const Header = () => {
               {user && <span className="hidden md:block text-gray-800 font-medium text-sm">{user.firstName} {user.lastName}</span>}
             </button>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-52 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-30">
-                <div className="flex gap-2 mt-3 px-4">
+              <div className="absolute right-0 mt-2 w-64 p-2 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-30">
+                <div className="flex gap-2 mt-3 px-2">
                   <Image src={doe} alt="Profile Picture" className="w-10 h-10 rounded-full object-cover" />
                   <div className="flex flex-col gap-1">
                     {user && <span className="text-gray-800 font-medium text-xs">{user.firstName} {user.lastName}</span>}
-                    {user && <span className="text-gray-400 font-normal text-xs">{user.email}</span>}
+                    {user && <span className="text-gray-400 font-normal text-xs min-w-5 text-wrap">{user.email}</span>}
                   </div>
                 </div>
-                <Image src={line} alt="separator" className="w-44 h-0.5 mx-4 mt-1 rounded-full" />
-                <a href="/settings" className="flex items-center px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                <Image src={line} alt="separator" className="w-56 h-0.5 mx-2 mt-3 rounded-full" />
+                <a href="/settings" className="flex items-center px-2 py-2 text-xs text-gray-700 hover:bg-gray-100">
                   <User className="w-4 h-4 mr-2" /> View Profile
                 </a>
-                <button onClick={handleLogout} className="w-full flex items-center px-4 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                <button onClick={handleLogout} className="w-full flex items-center px-2 py-2 text-xs text-gray-700 hover:bg-gray-100">
                   <LogOut className="w-4 h-4 mr-2" /> Logout
                 </button>
                 {error && <p className="text-red-600 text-sm text-center font-semibold mt-2">{error}</p>}

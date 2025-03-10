@@ -9,12 +9,13 @@ import envelope from './../public/icons/envelope.png';
 import lock from './../public/icons/lock_dark.svg';
 import { Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "./store/authStore";
+import toast from "react-hot-toast";
 
 const EMAIL_REGEX = /^(?=.*[a-z])(?=.*[@]).{3,100}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[?&()_+={}[:;'"<>,|/~!@#$%]).{8,15}$/;
 
 
-const CompanyLogin = () => {
+const Login = () => {
   const userRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const { login, error } = useAuthStore();
@@ -86,10 +87,21 @@ const CompanyLogin = () => {
         localStorage.setItem("user", JSON.stringify({ email, password }));
       }
 
+      // Show success toast with the username
+      const { firstName } = response || {}; // Extract firstName safely
+
+      if (token) {
+        toast.success(`Welcome back, ${firstName || "User"}!`, {
+          duration: 3000,
+          position: "top-right",
+        });
+      }
+
       // Redirect to the dashboard
       router.push("/dashboard");
     } catch (err) {
       console.error("❌ Login failed:", err);
+      toast.error("Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -192,19 +204,10 @@ const CompanyLogin = () => {
               © {new Date().getFullYear()} Rights are Reserved by hosoptima.com
             </h3>
           </div>
-
-          {/* <div>
-                      <p className="relative text-black text-sm lg:text-center lg:mt-6 xl:mt-6 xl:ml-1 xx:mt-6 xx:ml-1 z-10">
-                        Don&apos;t have an account?
-                        <Link href="/sign-up"><span className="text-blue font-semibold pl-0.5">
-                          sign Up</span>
-                        </Link>
-                      </p>
-                    </div> */}
         </form>
       </div>
     </div>
   );
 };
 
-export default CompanyLogin;
+export default Login;
